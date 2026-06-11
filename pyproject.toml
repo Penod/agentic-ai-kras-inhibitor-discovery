@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentic-ai-kras-inhibitor-discovery"
+version = "0.1.0"
+description = "Agentic AI platform for KRAS mutant-selective inhibitor discovery."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Penod CCE" }]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.2"]
+features = ["rdkit>=2023.9"]
+modeling = ["scikit-learn>=1.5", "joblib>=1.4", "numpy>=1.26"]
+xgboost = ["xgboost>=2.0"]
+interpretation = ["shap>=0.45", "joblib>=1.4", "numpy>=1.26"]
+reports = ["reportlab>=4.0"]
+
+[project.scripts]
+kras-screen = "kras_discovery.cli:main"
+kras-curate-chembl = "kras_discovery.data_curation.chembl_pipeline:main"
+kras-build-rdkit-features = "kras_discovery.feature_engineering.rdkit_pipeline:main"
+kras-train-models = "kras_discovery.modeling.train_models:main"
+kras-quality-report = "kras_discovery.quality.quality_pipeline:main"
+kras-interpret-model = "kras_discovery.interpretation.interpret_model:main"
+kras-run-shap = "kras_discovery.interpretation.run_shap:main"
+kras-generate-interpretation-report = "kras_discovery.interpretation.generate_report:main"
+kras-validate-known-inhibitors = "kras_discovery.validation.known_inhibitors:main"
+kras-batch-screen = "kras_discovery.screening.batch_screen:main"
+kras-prepare-zinc = "kras_discovery.screening.zinc_prepare:main"
+kras-triage-hits = "kras_discovery.screening.hit_triage:main"
+kras-hit-report = "kras_discovery.screening.hit_report:main"
+kras-model-performance-report = "kras_discovery.modeling.performance_report:main"
+kras-markdown-to-pdf = "kras_discovery.reports.markdown_pdf:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

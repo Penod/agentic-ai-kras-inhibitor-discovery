@@ -1,0 +1,9 @@
+-e .
+rdkit>=2023.9
+numpy>=1.26
+scikit-learn>=1.5
+joblib>=1.4
+xgboost>=2.0
+shap>=0.45
+reportlab>=4.0
+pytest>=8.2
