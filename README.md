@@ -1,20 +1,19 @@
 # Agentic AI KRAS Inhibitor Discovery
 
-**Recommended GitHub repository name:** `agentic-ai-kras-inhibitor-discovery`
-
-An agentic AI and computational drug discovery platform for **KRAS mutant-selective inhibitor discovery**, focused on **KRAS G12C**, **KRAS G12D**, **KRAS G12V**, and **SOS1** in pancreatic cancer and lung adenocarcinoma.
+## Overview
+An agentic AI and computational drug discovery platform for **KRAS mutant-selective inhibitor discovery**, focused on **KRAS G12C**, **KRAS G12D**, **KRAS G12V**, and **SOS1** in pancreatic cancer, lung adenocarcinoma, and colorectal cancer.
 
 This project is designed as a research-grade, reproducible portfolio system: it combines ChEMBL data curation, target-aware screening agents, active/inactive compound labeling, and a roadmap for machine learning, biomedical RAG, docking, molecular dynamics validation, and cloud deployment.
 
 ## Proposed Endeavor
 
-Develop agentic AI systems for KRAS mutant-selective anti-cancer drug discovery, focusing on computational screening, evidence synthesis, and molecular validation for pancreatic cancer and lung adenocarcinoma.
+Develop agentic AI systems for KRAS mutant-selective anti-cancer drug discovery, focusing on computational screening, evidence synthesis, and molecular validation for pancreatic cancer, lung adenocarcinoma, and colorectal cancer.
 
 ## Why This Matters
 
 KRAS is one of the most important oncogenic drivers in human cancer and has historically been considered difficult to drug. The 2021 FDA accelerated approval of sotorasib for KRAS G12C-mutated non-small cell lung cancer marked a major milestone: KRAS inhibition moved from a long-standing challenge to an active therapeutic frontier.
 
-This project builds on that frontier by creating an AI-assisted screening framework for mutant-selective KRAS discovery. The scientific and public-interest rationale is strong because KRAS-driven cancers include high-burden malignancies such as pancreatic cancer and lung adenocarcinoma, where improved therapeutic options remain urgently needed.
+This project builds on that frontier by creating an AI-assisted screening framework for mutant-selective KRAS discovery. The scientific and public-interest rationale is strong because KRAS-driven cancers include high-burden malignancies such as pancreatic cancer, lung adenocarcinoma, and colorectal cancer, where improved therapeutic options remain urgently needed.
 
 ## National-Importance Framing
 
@@ -57,7 +56,7 @@ The KRAS target-fit agent now attempts to use the trained model artifacts in `ar
 
 ## ChEMBL Data Curation
 
-The first research-grade pipeline mirrors a thesis-style computational drug discovery workflow: retrieve target activity data, clean it, label active/inactive compounds, and prepare a training set for downstream RDKit feature generation and model comparison.
+This project pipeline mirrors a computational drug discovery workflow: retrieve target activity data, clean it, label active/inactive compounds, and prepare a training set for downstream RDKit feature generation and model comparison.
 
 Target sources:
 
@@ -158,7 +157,7 @@ pip install scikit-learn joblib numpy
 python -m kras_discovery.modeling.train_models
 ```
 
-Optional XGBoost support:
+XGBoost installation:
 
 ```powershell
 pip install xgboost
@@ -184,7 +183,7 @@ Models currently compared:
 - Decision Tree
 - Naive Bayes
 - SVM with RBF kernel
-- XGBoost, when installed
+- XGBoost
 
 Default model-selection metric: `roc_auc`.
 
@@ -219,7 +218,7 @@ data/processed/interpretation/feature_importance_summary.json
 
 The current interpretation phase supports models with built-in `feature_importances_` or `coef_`, including XGBoost, Random Forest, Decision Tree, and Logistic Regression. Feature importance is grouped into RDKit descriptors, MACCS keys, and Morgan fingerprint bits.
 
-Optional SHAP analysis:
+SHAP analysis:
 
 ```powershell
 pip install shap
@@ -239,7 +238,7 @@ Report output:
 reports/model_interpretation_report.md
 ```
 
-Generate the model-performance summary for portfolio or petition exhibits:
+Generate the model-performance summary:
 
 ```powershell
 python -m kras_discovery.modeling.performance_report
@@ -261,7 +260,7 @@ pip install -e .
 python -m kras_discovery.cli "O=C(NC1=CC=CC=C1)C1=CC=CC=C1"
 ```
 
-After model training, the same CLI command uses the saved best model automatically:
+After model training, the same CLI command uses the saved best model:
 
 ```powershell
 python -m kras_discovery.cli "SMILES_HERE"
@@ -290,7 +289,7 @@ data/processed/known_inhibitor_validation/known_kras_inhibitor_validation_summar
 data/processed/known_inhibitor_validation/known_kras_inhibitor_agent_reports.json
 ```
 
-This validation set includes verified reference compounds such as sotorasib, adagrasib, divarasib, and MRTX1133. It is used as an external positive-control sanity check: known inhibitors should ideally receive higher KRAS activity probabilities than weak or unrelated screening candidates. If the trained model scores known inhibitors poorly, that result should be documented as a model limitation and used to guide additional curation, target-specific labeling, or model improvement.
+This validation set includes verified reference compounds such as sotorasib, adagrasib, divarasib, and MRTX1133. It is used as an external positive-control sanity check: known inhibitors should receive higher KRAS activity probabilities than weak or unrelated screening candidates. If the trained model scores known inhibitors, that result should be documented as a model limitation and used to guide additional curation, target-specific labeling, or model improvement.
 
 ## Batch Virtual Screening
 
@@ -329,7 +328,7 @@ To export only the top-ranked candidates:
 python -m kras_discovery.screening.batch_screen --input path/to/library.csv --top-n 25
 ```
 
-If ZINC exports a `.smi` file, convert and sample it before screening:
+If ZINC22 exports a `.smi` file, convert and sample it before screening:
 
 ```powershell
 python -m kras_discovery.screening.zinc_prepare --input data/external/zinc_raw/EC/ECAA.smi --output data/external/zinc_screening_library.csv --limit 5000
@@ -361,7 +360,7 @@ Output:
 reports/zinc_hit_triage_report.md
 ```
 
-Export the ZINC hit triage report to PDF:
+Export the ZINC22 hit triage report to PDF:
 
 ```powershell
 pip install reportlab
@@ -447,7 +446,3 @@ This repository is intended to support a larger technical portfolio by producing
 
 - FDA: sotorasib received accelerated approval on May 28, 2021 for KRAS G12C-mutated locally advanced or metastatic NSCLC after at least one prior systemic therapy.
 - NCI: the sotorasib approval was described as the first FDA-approved KRAS inhibitor and a milestone for a target long considered difficult to drug.
-
-## License
-
-MIT
