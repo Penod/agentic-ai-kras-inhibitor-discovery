@@ -6,6 +6,14 @@ from typing import Any
 
 @dataclass
 class MoleculeCandidate:
+    """A molecule submitted to the screening workflow.
+
+    The project keeps this object intentionally small: candidate identity and
+    SMILES are enough for the current CLI and batch-screening workflows.
+    Additional metadata from CSV libraries is preserved in downstream summary
+    outputs instead of expanding the core runtime schema.
+    """
+
     smiles: str
     name: str = "Candidate"
 
@@ -28,6 +36,13 @@ class TargetPanel:
 
 @dataclass
 class AgentFinding:
+    """A single agent's contribution to a candidate report.
+
+    `score` is always normalized to the 0-1 range by convention, but the
+    interpretation depends on the agent. `evidence` stores human-readable
+    rationale, while `metrics` keeps structured values for reports and filters.
+    """
+
     agent: str
     score: float
     label: str
@@ -37,6 +52,13 @@ class AgentFinding:
 
 @dataclass
 class CandidateReport:
+    """Final report returned by the agent orchestrator for one molecule.
+
+    The `model_copy` and `model_dump` methods mimic the small subset of a
+    Pydantic-style API used by the rest of the project without introducing a
+    heavier runtime dependency.
+    """
+
     compound: str
     smiles: str
     target_panel: TargetPanel
@@ -64,6 +86,8 @@ class CandidateReport:
 
 @dataclass
 class CandidateContext:
+    """Mutable state passed between agents during one screening run."""
+
     candidate: MoleculeCandidate
     target_panel: TargetPanel
     features: dict[str, float | int | str] = field(default_factory=dict)

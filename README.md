@@ -1,170 +1,137 @@
 # Agentic AI KRAS Inhibitor Discovery
 
-## Overview
-An agentic AI and computational drug discovery platform for **KRAS mutant-selective inhibitor discovery**, focused on **KRAS G12C**, **KRAS G12D**, **KRAS G12V**, and **SOS1** in pancreatic cancer, lung adenocarcinoma, and colorectal cancer.
+This repository is an end-to-end computational drug discovery workflow for prioritizing KRAS-pathway inhibitor candidates from public bioactivity and chemical-library data.
 
-This project is designed as a research-grade, reproducible portfolio system: it combines ChEMBL data curation, target-aware screening agents, active/inactive compound labeling, and a roadmap for machine learning, biomedical RAG, docking, molecular dynamics validation, and cloud deployment.
+I built it to answer a practical engineering question:
 
-## Proposed Endeavor
+> Can a reproducible Python pipeline combine ChEMBL curation, RDKit molecular features, supervised learning, agentic screening, and ZINC22 hit triage into a workflow that is understandable enough for scientific review?
 
-Develop agentic AI systems for KRAS mutant-selective anti-cancer drug discovery, focusing on computational screening, evidence synthesis, and molecular validation for pancreatic cancer, lung adenocarcinoma, and colorectal cancer.
+The current system is not a clinical tool and does not claim to discover confirmed KRAS drugs. It produces computational hit candidates that require docking, molecular dynamics, medicinal chemistry review, and experimental validation.
 
-## Why This Matters
+## Problem
 
-KRAS is one of the most important oncogenic drivers in human cancer and has historically been considered difficult to drug. The 2021 FDA accelerated approval of sotorasib for KRAS G12C-mutated non-small cell lung cancer marked a major milestone: KRAS inhibition moved from a long-standing challenge to an active therapeutic frontier.
+KRAS is a major cancer driver, especially in pancreatic cancer, lung adenocarcinoma, and colorectal cancer. Direct KRAS inhibition was historically difficult, and although KRAS G12C inhibitors changed the field, many KRAS-driven cancers still lack broadly effective targeted options.
 
-This project builds on that frontier by creating an AI-assisted screening framework for mutant-selective KRAS discovery. The scientific and public-interest rationale is strong because KRAS-driven cancers include high-burden malignancies such as pancreatic cancer, lung adenocarcinoma, and colorectal cancer, where improved therapeutic options remain urgently needed.
-
-## National-Importance Framing
-
-This repository supports a broader proposed endeavor in:
-
-- AI-enabled cancer drug discovery
-- precision oncology
-- computational screening of difficult therapeutic targets
-- KRAS mutant-selective inhibitor prioritization
-- reproducible biomedical machine learning infrastructure
-- future cloud-native drug discovery workflows
-
-The project is not presented as a clinical system or treatment recommendation. It is a computational research platform for early-stage candidate prioritization and scientific review.
+For this project, I focused on the early computational screening problem: assembling public bioactivity data, training a KRAS bioactivity classifier, and using that model inside a transparent screening workflow.
 
 ## Target Scope
 
-| Target | Gene/Node | Discovery Role |
-| --- | --- | --- |
-| KRAS G12C | KRAS | Clinically validated covalent inhibitor target |
-| KRAS G12D | KRAS | High-priority pancreatic cancer mutation |
-| KRAS G12V | KRAS | Common solid-tumor mutation with limited direct inhibitor options |
-| SOS1 | SOS1 | Upstream KRAS pathway exchange-factor target |
+The project is organized around the KRAS pathway:
 
-## Current Capabilities
+| Target or node | Role in this project |
+| --- | --- |
+| KRAS G12C | Clinically validated direct-inhibition starting point |
+| KRAS G12D | High-priority pancreatic cancer mutation |
+| KRAS G12V | Common KRAS mutation with limited direct-inhibitor options |
+| SOS1 | Pathway-relevant exchange factor for future expansion |
 
-The current prototype accepts candidate SMILES strings and routes them through a multi-agent screening workflow:
+Important limitation: the current trained model should be described as a KRAS bioactivity classifier. SOS1 is included in the curation and pathway framing, but the current labeled training set is dominated by KRAS records and does not support a standalone SOS1 predictor yet.
 
-1. Molecule validation
-2. Molecular feature extraction
-3. KRAS pathway target-fit estimation
-4. Mutant selectivity hypothesis
-5. ADMET suitability
-6. Toxicity risk
-7. KRAS literature evidence readiness
-8. Manufacturability assessment
-9. Clinical relevance for pancreatic/lung cancer
-10. Candidate ranking
+## Design Goals
 
-The KRAS target-fit agent now attempts to use the trained model artifacts in `artifacts/models/` for model-powered inference. If RDKit, joblib, or model artifacts are unavailable, the agent falls back to the explainable offline proxy so the CLI remains runnable.
+I made a few deliberate design choices:
 
-## ChEMBL Data Curation
+- Use public data sources so the workflow can be inspected and rerun.
+- Keep each pipeline stage callable from the command line.
+- Prefer standard cheminformatics features before adding deep learning.
+- Compare several baseline models instead of reporting one model in isolation.
+- Preserve model outputs, reports, and release snapshots for reproducibility.
+- Keep agent outputs explainable enough for human scientific review.
 
-This project pipeline mirrors a computational drug discovery workflow: retrieve target activity data, clean it, label active/inactive compounds, and prepare a training set for downstream RDKit feature generation and model comparison.
+I avoided building a web app first because the core risk was not UI. The core risk was whether the data, labels, features, models, and screening outputs were scientifically coherent.
 
-Target sources:
+## Architecture
 
-- KRAS ChEMBL target: `CHEMBL2189121`
-- SOS1 ChEMBL target: `CHEMBL4523334`
-
-Run the KRAS/SOS1 curation pipeline:
-
-```powershell
-python -m kras_discovery.data_curation.chembl_pipeline
-```
-
-For a quick smoke test with fewer records:
-
-```powershell
-python -m kras_discovery.data_curation.chembl_pipeline --max-records-per-target 100
-```
-
-Outputs:
+The repository is organized as a Python package:
 
 ```text
-data/processed/kras_chembl_raw_activities.csv
-data/processed/kras_chembl_curated_activities.csv
-data/processed/kras_training_set.csv
-data/processed/kras_curation_summary.json
+src/kras_discovery/
+  data_curation/       ChEMBL retrieval, cleaning, activity labeling
+  feature_engineering/ RDKit descriptors, MACCS keys, Morgan fingerprints
+  quality/             Drug-likeness and assay-quality reports
+  modeling/            Model training, cross-validation, performance reports
+  inference/           Saved-model loading and SMILES-level prediction
+  agents/              Multi-agent candidate evaluation workflow
+  screening/           Batch screening, ZINC22 preparation, hit triage
+  interpretation/      Feature importance, optional SHAP, interpretation report
+  validation/          Known KRAS inhibitor positive-control screening
+  reports/             Markdown-to-PDF report utility
 ```
 
-Default labeling rule:
-
-- Active: `pchembl_value >= 7.0`
-- Inactive: `pchembl_value <= 5.0`
-- Ambiguous: `5.0 < pchembl_value < 7.0`
-- Unlabeled: missing pChEMBL value
-
-The middle activity range is retained in the curated audit file but excluded from the first training set to keep labels cleaner.
-
-## RDKit Feature Engineering
-
-After creating `data/processed/kras_training_set.csv`, generate model-ready molecular features with RDKit.
-
-Install the optional feature-engineering dependency:
-
-```powershell
-pip install rdkit
-```
-
-Run the RDKit feature pipeline:
-
-```powershell
-python -m kras_discovery.feature_engineering.rdkit_pipeline
-```
-
-Outputs:
+The main workflow is:
 
 ```text
-data/processed/kras_features_descriptors.csv
-data/processed/kras_features_maccs.csv
-data/processed/kras_features_morgan.csv
-data/processed/kras_model_matrix.csv
-data/processed/kras_feature_summary.json
+ChEMBL activities
+  -> curated training set
+  -> RDKit feature matrix
+  -> model training and cross-validation
+  -> saved model artifact
+  -> agentic screening pipeline
+  -> ZINC22 batch screen
+  -> hit triage report
+  -> release snapshot
 ```
 
-Feature groups:
+## Data Sources
 
-- RDKit descriptors: molecular weight, LogP, TPSA, H-bond donors/acceptors, rotatable bonds, ring count, aromatic ring count, fraction CSP3, heavy atom count, NHOH count, NO count
-- MACCS keys: `maccs_1` through `maccs_166`
-- Morgan fingerprints: `morgan_0` through `morgan_2047`
+Training data is retrieved from ChEMBL:
 
-The resulting `kras_model_matrix.csv` is the input for the next phase: XGBoost, Random Forest, SVM, Decision Tree, and Naive Bayes model training.
+| Source | Identifier |
+| --- | --- |
+| KRAS | `CHEMBL2189121` |
+| SOS1 | `CHEMBL4523334` |
 
-## Drug-Likeness and Assay-Quality Reports
+The curation step calls the live ChEMBL API. This keeps the pipeline current, but it also means exact row counts can change as ChEMBL updates records. For archival reproducibility, the repository includes release snapshots that preserve the generated metrics, reports, and selected artifacts from a specific run.
 
-Generate quality-control reports before interpreting model performance:
+Candidate screening used sampled lead-like compounds from ZINC22, accessed through the CartBlanche/ZINC22 tranche interface.
 
-```powershell
-python -m kras_discovery.quality.quality_pipeline
-```
+## Labeling Strategy
 
-Outputs:
+I used pChEMBL thresholds to create a first binary classification task:
+
+| Class | Rule |
+| --- | --- |
+| Active | `pchembl_value >= 7.0` |
+| Inactive | `pchembl_value <= 5.0` |
+| Ambiguous | `5.0 < pchembl_value < 7.0` |
+| Unlabeled | missing pChEMBL |
+
+Only clear active/inactive records are used for the first training set. Ambiguous records remain in curated audit files but are excluded from model training.
+
+This is a pragmatic choice. It reduces label noise but also narrows the training set. A future version should explore regression on continuous pChEMBL values, assay-aware modeling, and uncertainty estimates.
+
+## Molecular Representation
+
+SMILES strings are converted into numerical features using RDKit:
+
+- Physicochemical descriptors: molecular weight, LogP, TPSA, hydrogen-bond counts, ring counts, fraction CSP3, and related descriptors.
+- MACCS keys: 166 structural keys.
+- Morgan fingerprints: 2048-bit circular fingerprints.
+
+The current model matrix contains:
 
 ```text
-data/processed/kras_model_matrix_druglikeness_report.csv
-data/processed/kras_model_matrix_druglike_subset.csv
-data/processed/kras_druglikeness_summary.json
-data/processed/kras_assay_quality_report.csv
-data/processed/kras_assay_quality_subset.csv
-data/processed/kras_assay_quality_summary.json
+1,398 compounds
+2,226 numeric molecular features
 ```
 
-Drug-likeness checks include Lipinski-style violations, Veber-style TPSA/rotatable-bond filters, and a project-specific drug-like window. These filters are used for reporting and subset analysis, not as irreversible deletion rules, because KRAS covalent inhibitor chemistry may intentionally stretch some classic small-molecule filters.
+I chose these features because they are standard, reproducible, and easy to inspect. A graph neural network may be useful later, but descriptor/fingerprint baselines are a better first step for a limited labeled dataset.
 
-## Model Training
+## Model Development
 
-After `data/processed/kras_model_matrix.csv` exists, train and compare baseline models:
+The training pipeline compares:
 
-```powershell
-pip install scikit-learn joblib numpy
-python -m kras_discovery.modeling.train_models
-```
+- Dummy baseline
+- Logistic Regression
+- Random Forest
+- Decision Tree
+- Naive Bayes
+- SVM with RBF kernel
+- XGBoost
 
-XGBoost installation:
+I selected XGBoost as the deployed model because it performed best on the holdout ROC-AUC metric and is well suited to heterogeneous descriptor/fingerprint feature spaces. Random Forest performed slightly better in cross-validated ROC-AUC, so both models remain important references in the performance report.
 
-```powershell
-pip install xgboost
-python -m kras_discovery.modeling.train_models
-```
-
-Outputs:
+The training pipeline writes:
 
 ```text
 data/processed/model_metrics.csv
@@ -175,274 +142,174 @@ artifacts/models/kras_best_model.pkl
 artifacts/models/feature_columns.json
 ```
 
-Models currently compared:
+## Performance Summary
 
-- Dummy baseline
-- Logistic Regression
-- Random Forest
-- Decision Tree
-- Naive Bayes
-- SVM with RBF kernel
-- XGBoost
+Holdout test-set results for the deployed XGBoost model:
 
-Default model-selection metric: `roc_auc`.
+| Metric | Value |
+| --- | --- |
+| Accuracy | 0.9429 |
+| Precision | 0.9511 |
+| Recall | 0.9772 |
+| F1 | 0.9640 |
+| ROC-AUC | 0.9845 |
+| PR-AUC | 0.9957 |
 
-The training pipeline also reports stratified cross-validation metrics by default:
+Five-fold stratified cross-validation:
 
-```powershell
-python -m kras_discovery.modeling.train_models --cv-folds 5
+| Model | ROC-AUC | PR-AUC | Accuracy | F1 |
+| --- | --- | --- | --- | --- |
+| Random Forest | 0.970 +/- 0.011 | 0.991 +/- 0.003 | 0.925 +/- 0.016 | 0.952 +/- 0.010 |
+| XGBoost | 0.968 +/- 0.008 | 0.990 +/- 0.002 | 0.933 +/- 0.017 | 0.958 +/- 0.011 |
+| Dummy baseline | 0.500 +/- 0.000 | 0.781 +/- 0.001 | 0.781 +/- 0.001 | 0.877 +/- 0.001 |
+
+These metrics support using the classifier for computational prioritization. They do not prove experimental KRAS inhibition.
+
+## Agentic Screening Workflow
+
+The agentic layer evaluates each candidate through small, focused components:
+
+| Agent | Purpose |
+| --- | --- |
+| Validation | Basic SMILES and property checks |
+| Feature | Lightweight approximate descriptors for agent context |
+| KRAS target fit | Trained-model inference when model artifacts are available |
+| Mutant selectivity | Heuristic hypothesis across KRAS mutations and SOS1 |
+| ADMET | Rule-based suitability proxy |
+| Toxicity | Simple structural-alert proxy |
+| Literature | Offline evidence-readiness placeholder |
+| Manufacturability | Synthetic-feasibility proxy |
+| Clinical relevance | Aggregates target fit, selectivity, ADMET, and toxicity |
+
+The trained model is loaded by `KRASTargetFitAgent`. If RDKit, joblib, or model artifacts are missing, the agent falls back to a transparent heuristic instead of failing the entire CLI. This makes the demo runnable in limited environments, but trained-model results should always be preferred for real screening.
+
+## ZINC22 Screening and Hit Triage
+
+I used a sampled ZINC22 lead-like tranche for a pilot virtual screen.
+
+The ZINC `.smi` file is converted into CSV format:
+
+```bash
+python -m kras_discovery.screening.zinc_prepare \
+  --input data/external/zinc_raw/EC/ECAA.smi \
+  --output data/external/zinc_screening_library.csv \
+  --limit 5000
 ```
 
-Cross-validation outputs include mean and standard deviation for accuracy, precision, recall, F1, ROC-AUC, and PR-AUC. These results are intended for model documentation and petition/reporting artifacts; the saved best model is still selected from the holdout test-set comparison unless `--selection-metric` is changed.
+Then the batch screener runs:
 
-## Model Interpretation
-
-After training, generate feature-importance outputs for the selected best model:
-
-```powershell
-python -m kras_discovery.interpretation.interpret_model
+```bash
+python -m kras_discovery.screening.batch_screen \
+  --input data/external/zinc_screening_library.csv
 ```
 
-For the drug-like subset model:
-
-```powershell
-python -m kras_discovery.interpretation.interpret_model --model-path artifacts/models/druglike/kras_best_model.pkl --feature-columns artifacts/models/druglike/feature_columns.json --output-dir data/processed/druglike_modeling/interpretation
-```
-
-Outputs:
+Hit selection is reproducible:
 
 ```text
-data/processed/interpretation/feature_importance.csv
-data/processed/interpretation/feature_importance_summary.json
+inference_mode = trained_model
+kras_probability_active >= 0.70
+admet_score >= 0.60
+toxicity_label = Low risk
+recommendation = Advance or Advance with review
 ```
 
-The current interpretation phase supports models with built-in `feature_importances_` or `coef_`, including XGBoost, Random Forest, Decision Tree, and Logistic Regression. Feature importance is grouped into RDKit descriptors, MACCS keys, and Morgan fingerprint bits.
-
-SHAP analysis:
-
-```powershell
-pip install shap
-python -m kras_discovery.interpretation.run_shap
-python -m kras_discovery.interpretation.run_shap --model-path artifacts/models/druglike/kras_best_model.pkl --model-matrix data/processed/kras_model_matrix_druglike_subset.csv --output-dir data/processed/druglike_modeling/interpretation/shap
-```
-
-Generate the written interpretation report:
-
-```powershell
-python -m kras_discovery.interpretation.generate_report
-```
-
-Report output:
-
-```text
-reports/model_interpretation_report.md
-```
-
-Generate the model-performance summary:
-
-```powershell
-python -m kras_discovery.modeling.performance_report
-```
-
-Output:
-
-```text
-reports/model_performance_summary.md
-```
-
-## Quick Start
-
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
-pip install -e .
-python -m kras_discovery.cli "O=C(NC1=CC=CC=C1)C1=CC=CC=C1"
-```
-
-After model training, the same CLI command uses the saved best model:
-
-```powershell
-python -m kras_discovery.cli "SMILES_HERE"
-```
-
-The `kras_target_fit` finding will include `inference_mode`, `probability_active`, `predicted_label`, `model_path`, and `feature_count` when trained-model inference is available.
-
-## Known KRAS Inhibitor Validation
-
-Before screening unknown compounds, run the trained agent workflow on known KRAS inhibitor positive controls:
-
-```powershell
-python -m kras_discovery.validation.known_inhibitors
-```
-
-Input:
-
-```text
-data/external/known_kras_inhibitors.csv
-```
-
-Outputs:
-
-```text
-data/processed/known_inhibitor_validation/known_kras_inhibitor_validation_summary.csv
-data/processed/known_inhibitor_validation/known_kras_inhibitor_agent_reports.json
-```
-
-This validation set includes verified reference compounds such as sotorasib, adagrasib, divarasib, and MRTX1133. It is used as an external positive-control sanity check: known inhibitors should receive higher KRAS activity probabilities than weak or unrelated screening candidates. If the trained model scores known inhibitors, that result should be documented as a model limitation and used to guide additional curation, target-specific labeling, or model improvement.
-
-## Batch Virtual Screening
-
-Screen a CSV library of candidate SMILES through the full agent workflow:
-
-```powershell
-python -m kras_discovery.screening.batch_screen --input data/external/example_screening_library.csv
-```
-
-Expected input columns:
-
-```text
-compound,smiles
-```
-
-Additional metadata columns such as `library` and `notes` are preserved in the ranked summary when present.
-
-Outputs:
-
-```text
-data/processed/batch_screening/ranked_screening_results.csv
-data/processed/batch_screening/agent_screening_reports.json
-```
-
-The ranked CSV includes overall score, recommendation, validation label, KRAS target-fit label, trained-model probability when available, inference mode, mutant-selectivity hypothesis, ADMET score, toxicity score, manufacturability score, clinical-relevance score, and SMILES. The JSON output preserves the full multi-agent report for each screened compound.
-
-For custom column names:
-
-```powershell
-python -m kras_discovery.screening.batch_screen --input path/to/library.csv --name-column molecule_name --smiles-column canonical_smiles
-```
-
-To export only the top-ranked candidates:
-
-```powershell
-python -m kras_discovery.screening.batch_screen --input path/to/library.csv --top-n 25
-```
-
-If ZINC22 exports a `.smi` file, convert and sample it before screening:
-
-```powershell
-python -m kras_discovery.screening.zinc_prepare --input data/external/zinc_raw/EC/ECAA.smi --output data/external/zinc_screening_library.csv --limit 5000
-python -m kras_discovery.screening.batch_screen --input data/external/zinc_screening_library.csv
-```
-
-After screening, filter computational hit candidates:
-
-```powershell
-python -m kras_discovery.screening.hit_triage --input data/processed/batch_screening/ranked_screening_results.csv --min-kras-probability 0.70 --min-admet-score 0.60 --top-n 25
-```
-
-Outputs:
-
-```text
-data/processed/batch_screening/hit_triage/top_hit_candidates.csv
-data/processed/batch_screening/hit_triage/hit_triage_summary.json
-```
-
-Generate a written Markdown triage report:
-
-```powershell
-python -m kras_discovery.screening.hit_report
-```
-
-Output:
+The resulting candidates are documented in:
 
 ```text
 reports/zinc_hit_triage_report.md
+reports/zinc_hit_triage_report.pdf
 ```
 
-Export the ZINC22 hit triage report to PDF:
+## Known Inhibitor Benchmark
 
-```powershell
-pip install reportlab
-python -m kras_discovery.reports.markdown_pdf --input reports/zinc_hit_triage_report.md --output reports/zinc_hit_triage_report.pdf
+The repository includes a small positive-control set:
+
+- Sotorasib
+- Adagrasib
+- Divarasib
+- MRTX1133
+
+This is a sanity check, not a substitute for external validation. If a known inhibitor is scored poorly, that result should be documented as a model limitation and investigated through SMILES verification, training data coverage, and applicability-domain analysis.
+
+## Reproducibility
+
+Install:
+
+```bash
+python -m venv .venv
+source .venv/Scripts/activate
+pip install -r requirements.txt
 ```
 
 Run tests:
 
-```powershell
+```bash
 python -m unittest discover -s tests
 ```
 
-For a complete rebuild order and reproducibility notes, see:
+Rebuild order:
+
+```bash
+python -m kras_discovery.data_curation.chembl_pipeline
+python -m kras_discovery.feature_engineering.rdkit_pipeline
+python -m kras_discovery.quality.quality_pipeline
+python -m kras_discovery.modeling.train_models --cv-folds 5
+python -m kras_discovery.interpretation.interpret_model
+python -m kras_discovery.modeling.performance_report
+python -m kras_discovery.validation.known_inhibitors
+python -m kras_discovery.screening.batch_screen --input data/external/example_screening_library.csv
+python -m kras_discovery.screening.hit_triage --input data/processed/batch_screening/ranked_screening_results.csv
+python -m kras_discovery.screening.hit_report
+```
+
+See [docs/reproducibility_protocol.md](docs/reproducibility_protocol.md) for full details.
+
+## Reports and Release Snapshot
+
+Key artifacts:
 
 ```text
-docs/reproducibility_protocol.md
+reports/model_performance_summary.md
+reports/model_interpretation_report.md
+reports/zinc_hit_triage_report.md
+reports/zinc_hit_triage_report.pdf
+releases/v0.1-kras-zinc-screening.zip
 ```
 
-## Example Output
+The release snapshot preserves the generated evidence for review because live ChEMBL results may change over time.
 
-```json
-{
-  "compound": "Candidate-1",
-  "smiles": "O=C(NC1=CC=CC=C1)C1=CC=CC=C1",
-  "target_family": "KRAS pathway",
-  "overall_score": 0.74,
-  "overall_rank": 1,
-  "recommendation": "Advance with review"
-}
-```
+## Engineering Tradeoffs
 
-## Architecture
+Several choices were made deliberately:
 
-```text
-Research Scientist
-       |
-       v
-KRAS Agent Orchestrator
-       |
-       +--> Validation Agent
-       +--> Feature Agent
-       +--> KRAS Target-Fit Agent
-       +--> Mutant Selectivity Agent
-       +--> ADMET Agent
-       +--> Toxicity Agent
-       +--> Literature Agent
-       +--> Manufacturability Agent
-       +--> Clinical Relevance Agent
-       +--> Ranking Agent
-       |
-       v
-Human Scientific Review
-       |
-       v
-Ranked KRAS Pathway Inhibitor Candidates
-```
+- I used descriptor and fingerprint models before deep learning because the labeled dataset is limited.
+- I kept heuristic agents separate from trained-model inference so their assumptions remain visible.
+- I committed small reports and summaries, but kept large raw data and model files out of normal Git history unless packaged in a release snapshot.
+- I used CLI-first workflows because they are easier to test, rerun, and automate than notebooks.
+- I treated drug-likeness filters as flags rather than hard deletion rules because oncology chemistry can violate simple rules.
 
-## Research Roadmap
+## Limitations
 
-- Curate KRAS G12C, G12D, G12V, and SOS1 bioactivity records from ChEMBL, BindingDB, PubChem, and primary literature.
-- Generate RDKit molecular descriptors, MACCS keys, Morgan fingerprints, and substructure flags.
-- Train baseline models for KRAS target activity and mutant selectivity.
-- Compare XGBoost, Random Forest, SVM, LightGBM, and neural baselines.
-- Evaluate ROC-AUC, PR-AUC, precision, recall, F1-score, calibration, and class balance.
-- Add explainability outputs and model cards for scientific review.
-- Add ADMET/toxicity filters and uncertainty-aware candidate ranking.
-- Add PubMed RAG evidence summaries with source citations.
-- Add docking and molecular dynamics validation for prioritized candidates.
-- Deploy a reproducible API and cloud workflow on AWS.
+- The model predicts KRAS bioactivity from curated public assay data; it does not prove direct binding or mutant selectivity.
+- SOS1 is included as a pathway node but is not yet a separately trained predictive model.
+- ChEMBL activity records are heterogeneous across assay conditions.
+- ZINC22 hit candidates are computational predictions only.
+- The literature agent is currently an offline placeholder and should be replaced with source-cited PubMed retrieval.
+- Docking, molecular dynamics, and experimental validation are not yet implemented in this repository.
 
-## Evidence To Build
+## Version 2 Improvements
 
-This repository is intended to support a larger technical portfolio by producing:
+The next version should add:
 
-- reproducible curation scripts and datasets
-- benchmarked machine learning models
-- target-aware agentic screening reports
-- technical documentation and model cards
-- cloud deployment artifacts
-- future research report or preprint material
+- KRAS G12C docking for top ZINC22 hits.
+- Comparison against known inhibitors in the same docking protocol.
+- Applicability-domain analysis for model predictions.
+- Probability calibration.
+- More explicit assay-type stratification.
+- PubMed/RAG evidence retrieval with citations.
+- Better mapping of important MACCS/Morgan features back to chemical motifs.
+- AWS Batch or ECS deployment for larger screening runs.
 
-## Sources
+## License
 
-- FDA: sotorasib received accelerated approval on May 28, 2021 for KRAS G12C-mutated locally advanced or metastatic NSCLC after at least one prior systemic therapy.
-- NCI: the sotorasib approval was described as the first FDA-approved KRAS inhibitor and a milestone for a target long considered difficult to drug.
+MIT

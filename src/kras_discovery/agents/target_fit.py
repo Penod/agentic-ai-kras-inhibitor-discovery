@@ -7,6 +7,14 @@ from kras_discovery.utils.chemistry import clamp
 
 
 class KRASTargetFitAgent(Agent):
+    """Estimate whether a molecule fits the KRAS target profile.
+
+    The preferred path loads the trained KRAS bioactivity model and computes
+    RDKit features for the submitted SMILES. The heuristic path is retained so
+    the CLI remains usable in minimal environments, but its output is labeled
+    `heuristic_fallback` and should not be treated as model inference.
+    """
+
     name = "kras_target_fit"
 
     def run(self, context: CandidateContext) -> CandidateContext:
