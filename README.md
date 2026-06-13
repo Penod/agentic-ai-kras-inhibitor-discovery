@@ -294,7 +294,6 @@ Several choices were made deliberately:
 - SOS1 is included as a pathway node but is not yet a separately trained predictive model.
 - ChEMBL activity records are heterogeneous across assay conditions.
 - ZINC22 hit candidates are computational predictions only.
-- The literature agent is currently an offline placeholder and should be replaced with source-cited PubMed retrieval.
 - Docking, molecular dynamics, and experimental validation are not yet implemented in this repository.
 
 ## Version 2 Improvements
@@ -310,6 +309,3 @@ The next version should add:
 - Better mapping of important MACCS/Morgan features back to chemical motifs.
 - AWS Batch or ECS deployment for larger screening runs.
 
-## License
-
-MIT
