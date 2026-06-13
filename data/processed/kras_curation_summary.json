@@ -1,0 +1,14 @@
+{
+  "raw_records": 17063,
+  "training_rows": 1398,
+  "active_training_rows": 1092,
+  "inactive_training_rows": 306,
+  "ambiguous_records": 3205,
+  "unlabeled_records": 11974,
+  "g12c_training_rows": 873,
+  "g12d_training_rows": 377,
+  "g12v_training_rows": 71,
+  "sos1_training_rows": 0,
+  "kras_unspecified_training_rows": 77,
+  "unknown_training_rows": 0
+}

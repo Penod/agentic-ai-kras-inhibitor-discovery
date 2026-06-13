@@ -1,0 +1,15 @@
+{
+  "input_path": "data\\processed\\batch_screening\\ranked_screening_results.csv",
+  "total_screened": 5000,
+  "total_hit_candidates": 4,
+  "reported_top_n": 4,
+  "min_kras_probability": 0.7,
+  "min_admet_score": 0.6,
+  "require_low_toxicity": true,
+  "require_trained_model": true,
+  "allowed_recommendations": [
+    "Advance",
+    "Advance with review"
+  ],
+  "output_csv": "C:\\Users\\emman\\OneDrive\\Desktop\\Portfolio_Git\\Agentic AI Drug Discovery Platform\\kras-mutant-inhibitor-discovery\\data\\processed\\batch_screening\\hit_triage\\top_hit_candidates.csv"
+}

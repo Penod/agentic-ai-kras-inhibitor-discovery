@@ -1,0 +1,714 @@
+[
+  {
+    "compound": "Sotorasib",
+    "smiles": "C=CC(=O)N1CCN([C@H](C1)C)c1nc(=O)n(c2c1cc(F)c(n2)c1c(O)cccc1F)c1c(C)ccnc1C(C)C",
+    "target_panel": {
+      "family": "KRAS pathway",
+      "indication_focus": "pancreatic cancer and lung adenocarcinoma",
+      "nodes": [
+        {
+          "name": "KRAS G12C",
+          "gene": "KRAS",
+          "mutation": "G12C",
+          "role": "clinically validated covalent inhibitor target",
+          "disease_context": "non-small cell lung cancer and colorectal cancer"
+        },
+        {
+          "name": "KRAS G12D",
+          "gene": "KRAS",
+          "mutation": "G12D",
+          "role": "high-priority pancreatic cancer mutation",
+          "disease_context": "pancreatic ductal adenocarcinoma"
+        },
+        {
+          "name": "KRAS G12V",
+          "gene": "KRAS",
+          "mutation": "G12V",
+          "role": "common solid-tumor KRAS mutation",
+          "disease_context": "lung, colorectal, and pancreatic cancer"
+        },
+        {
+          "name": "SOS1",
+          "gene": "SOS1",
+          "mutation": "wild-type pathway node",
+          "role": "guanine nucleotide exchange factor upstream of KRAS activation",
+          "disease_context": "KRAS pathway modulation"
+        }
+      ]
+    },
+    "findings": [
+      {
+        "agent": "validation",
+        "score": 0.7,
+        "label": "Review",
+        "evidence": [
+          "LogP may create solubility or exposure risk",
+          "Hydrogen bond donor count exceeds threshold"
+        ],
+        "metrics": {
+          "atom_count": 41,
+          "hetero_atom_count": 9,
+          "ring_count": 5,
+          "hydrogen_bond_donors": 9,
+          "hydrogen_bond_acceptors": 9,
+          "rotatable_bonds": 22,
+          "aromatic_atom_count": 22,
+          "halogen_count": 2,
+          "molecular_weight": 530.36,
+          "logp": 7.01
+        }
+      },
+      {
+        "agent": "features",
+        "score": 1.0,
+        "label": "Descriptor profile generated",
+        "evidence": [
+          "Computed approximate descriptors for KRAS pathway screening"
+        ],
+        "metrics": {
+          "atom_count": 41,
+          "hetero_atom_count": 9,
+          "ring_count": 5,
+          "hydrogen_bond_donors": 9,
+          "hydrogen_bond_acceptors": 9,
+          "rotatable_bonds": 22,
+          "aromatic_atom_count": 22,
+          "halogen_count": 2,
+          "molecular_weight": 530.36,
+          "logp": 7.01
+        }
+      },
+      {
+        "agent": "kras_target_fit",
+        "score": 0.992,
+        "label": "Predicted KRAS-active",
+        "evidence": [
+          "Trained model inference estimated KRAS pathway activity probability from RDKit descriptors, MACCS keys, and Morgan fingerprints",
+          "Model-powered score replaces the offline target-fit proxy when model artifacts and RDKit are available"
+        ],
+        "metrics": {
+          "target_family": "KRAS pathway",
+          "inference_mode": "trained_model",
+          "probability_active": 0.99176,
+          "predicted_label": 1,
+          "model_path": "C:\\Users\\emman\\OneDrive\\Desktop\\Portfolio_Git\\Agentic AI Drug Discovery Platform\\kras-mutant-inhibitor-discovery\\artifacts\\models\\kras_best_model.pkl",
+          "feature_count": 2226
+        }
+      },
+      {
+        "agent": "mutant_selectivity",
+        "score": 1.0,
+        "label": "Best hypothesis: G12D",
+        "evidence": [
+          "Generated a mutant-selectivity hypothesis for human review"
+        ],
+        "metrics": {
+          "kras_g12c_hypothesis": 0.51,
+          "kras_g12d_hypothesis": 1.0,
+          "kras_g12v_hypothesis": 0.66,
+          "sos1_hypothesis": 1.0
+        }
+      },
+      {
+        "agent": "admet",
+        "score": 0.489,
+        "label": "ADMET review",
+        "evidence": [
+          "Estimated ADMET suitability from size, lipophilicity, and flexibility"
+        ],
+        "metrics": {
+          "oral_exposure_proxy": 0.383,
+          "distribution_proxy": 1.0,
+          "metabolic_risk_proxy": 0.083
+        }
+      },
+      {
+        "agent": "toxicity",
+        "score": 0.93,
+        "label": "Low risk",
+        "evidence": [
+          "No simple toxicity motifs detected"
+        ],
+        "metrics": {
+          "structural_alert_count": 0,
+          "halogen_count": 2.0
+        }
+      },
+      {
+        "agent": "literature",
+        "score": 0.74,
+        "label": "KRAS evidence-ready",
+        "evidence": [
+          "Offline literature stub prepared for targets: KRAS G12C, KRAS G12D, KRAS G12V, SOS1",
+          "Future version should retrieve PubMed evidence for KRAS mutant selectivity, resistance, and cancer indication context"
+        ],
+        "metrics": {
+          "retrieval_mode": "offline_stub"
+        }
+      },
+      {
+        "agent": "manufacturability",
+        "score": 0.391,
+        "label": "Complex synthesis",
+        "evidence": [
+          "Estimated synthesis feasibility from ring count, flexibility, and hetero atom burden"
+        ],
+        "metrics": {
+          "synthetic_accessibility_proxy": 0.391
+        }
+      },
+      {
+        "agent": "clinical_relevance",
+        "score": 0.853,
+        "label": "Relevant for KRAS-driven oncology",
+        "evidence": [
+          "Indication focus: pancreatic cancer and lung adenocarcinoma",
+          "Clinical relevance aggregates target fit, mutant-selectivity hypothesis, ADMET, and toxicity signals"
+        ],
+        "metrics": {
+          "kras_target_fit": 0.992,
+          "mutant_selectivity": 1.0,
+          "admet": 0.489,
+          "toxicity": 0.93
+        }
+      }
+    ],
+    "overall_score": 0.837,
+    "overall_rank": 1,
+    "recommendation": "Advance"
+  },
+  {
+    "compound": "Divarasib",
+    "smiles": "C[C@H]1CN(CCN1C2=NC(=NC3=C(C(=C(C=C32)Cl)C4=C(C(=CC(=N4)N)C)C(F)(F)F)F)OC[C@@H]5CCCN5C)C(=O)C=C",
+    "target_panel": {
+      "family": "KRAS pathway",
+      "indication_focus": "pancreatic cancer and lung adenocarcinoma",
+      "nodes": [
+        {
+          "name": "KRAS G12C",
+          "gene": "KRAS",
+          "mutation": "G12C",
+          "role": "clinically validated covalent inhibitor target",
+          "disease_context": "non-small cell lung cancer and colorectal cancer"
+        },
+        {
+          "name": "KRAS G12D",
+          "gene": "KRAS",
+          "mutation": "G12D",
+          "role": "high-priority pancreatic cancer mutation",
+          "disease_context": "pancreatic ductal adenocarcinoma"
+        },
+        {
+          "name": "KRAS G12V",
+          "gene": "KRAS",
+          "mutation": "G12V",
+          "role": "common solid-tumor KRAS mutation",
+          "disease_context": "lung, colorectal, and pancreatic cancer"
+        },
+        {
+          "name": "SOS1",
+          "gene": "SOS1",
+          "mutation": "wild-type pathway node",
+          "role": "guanine nucleotide exchange factor upstream of KRAS activation",
+          "disease_context": "KRAS pathway modulation"
+        }
+      ]
+    },
+    "findings": [
+      {
+        "agent": "validation",
+        "score": 0.7,
+        "label": "Review",
+        "evidence": [
+          "LogP may create solubility or exposure risk",
+          "Hydrogen bond donor count exceeds threshold"
+        ],
+        "metrics": {
+          "atom_count": 43,
+          "hetero_atom_count": 9,
+          "ring_count": 5,
+          "hydrogen_bond_donors": 9,
+          "hydrogen_bond_acceptors": 9,
+          "rotatable_bonds": 21,
+          "aromatic_atom_count": 0,
+          "halogen_count": 5,
+          "molecular_weight": 589.81,
+          "logp": 7.5
+        }
+      },
+      {
+        "agent": "features",
+        "score": 0.999,
+        "label": "Descriptor profile generated",
+        "evidence": [
+          "Computed approximate descriptors for KRAS pathway screening"
+        ],
+        "metrics": {
+          "atom_count": 43,
+          "hetero_atom_count": 9,
+          "ring_count": 5,
+          "hydrogen_bond_donors": 9,
+          "hydrogen_bond_acceptors": 9,
+          "rotatable_bonds": 21,
+          "aromatic_atom_count": 0,
+          "halogen_count": 5,
+          "molecular_weight": 589.81,
+          "logp": 7.5
+        }
+      },
+      {
+        "agent": "kras_target_fit",
+        "score": 0.998,
+        "label": "Predicted KRAS-active",
+        "evidence": [
+          "Trained model inference estimated KRAS pathway activity probability from RDKit descriptors, MACCS keys, and Morgan fingerprints",
+          "Model-powered score replaces the offline target-fit proxy when model artifacts and RDKit are available"
+        ],
+        "metrics": {
+          "target_family": "KRAS pathway",
+          "inference_mode": "trained_model",
+          "probability_active": 0.998149,
+          "predicted_label": 1,
+          "model_path": "C:\\Users\\emman\\OneDrive\\Desktop\\Portfolio_Git\\Agentic AI Drug Discovery Platform\\kras-mutant-inhibitor-discovery\\artifacts\\models\\kras_best_model.pkl",
+          "feature_count": 2226
+        }
+      },
+      {
+        "agent": "mutant_selectivity",
+        "score": 1.0,
+        "label": "Best hypothesis: G12D",
+        "evidence": [
+          "Generated a mutant-selectivity hypothesis for human review"
+        ],
+        "metrics": {
+          "kras_g12c_hypothesis": 0.75,
+          "kras_g12d_hypothesis": 1.0,
+          "kras_g12v_hypothesis": 0.75,
+          "sos1_hypothesis": 1.0
+        }
+      },
+      {
+        "agent": "admet",
+        "score": 0.44,
+        "label": "ADMET review",
+        "evidence": [
+          "Estimated ADMET suitability from size, lipophilicity, and flexibility"
+        ],
+        "metrics": {
+          "oral_exposure_proxy": 0.308,
+          "distribution_proxy": 0.886,
+          "metabolic_risk_proxy": 0.125
+        }
+      },
+      {
+        "agent": "toxicity",
+        "score": 0.895,
+        "label": "Low risk",
+        "evidence": [
+          "No simple toxicity motifs detected"
+        ],
+        "metrics": {
+          "structural_alert_count": 0,
+          "halogen_count": 5.0
+        }
+      },
+      {
+        "agent": "literature",
+        "score": 0.74,
+        "label": "KRAS evidence-ready",
+        "evidence": [
+          "Offline literature stub prepared for targets: KRAS G12C, KRAS G12D, KRAS G12V, SOS1",
+          "Future version should retrieve PubMed evidence for KRAS mutant selectivity, resistance, and cancer indication context"
+        ],
+        "metrics": {
+          "retrieval_mode": "offline_stub"
+        }
+      },
+      {
+        "agent": "manufacturability",
+        "score": 0.403,
+        "label": "Complex synthesis",
+        "evidence": [
+          "Estimated synthesis feasibility from ring count, flexibility, and hetero atom burden"
+        ],
+        "metrics": {
+          "synthetic_accessibility_proxy": 0.403
+        }
+      },
+      {
+        "agent": "clinical_relevance",
+        "score": 0.833,
+        "label": "Relevant for KRAS-driven oncology",
+        "evidence": [
+          "Indication focus: pancreatic cancer and lung adenocarcinoma",
+          "Clinical relevance aggregates target fit, mutant-selectivity hypothesis, ADMET, and toxicity signals"
+        ],
+        "metrics": {
+          "kras_target_fit": 0.998,
+          "mutant_selectivity": 1.0,
+          "admet": 0.44,
+          "toxicity": 0.895
+        }
+      }
+    ],
+    "overall_score": 0.827,
+    "overall_rank": 2,
+    "recommendation": "Advance"
+  },
+  {
+    "compound": "Adagrasib",
+    "smiles": "CN1CCC[C@H]1COC2=NC3=C(CCN(C3)C4=CC=CC5=C4C(=CC=C5)Cl)C(=N2)N6CCN([C@H](C6)CC#N)C(=O)C(=C)F",
+    "target_panel": {
+      "family": "KRAS pathway",
+      "indication_focus": "pancreatic cancer and lung adenocarcinoma",
+      "nodes": [
+        {
+          "name": "KRAS G12C",
+          "gene": "KRAS",
+          "mutation": "G12C",
+          "role": "clinically validated covalent inhibitor target",
+          "disease_context": "non-small cell lung cancer and colorectal cancer"
+        },
+        {
+          "name": "KRAS G12D",
+          "gene": "KRAS",
+          "mutation": "G12D",
+          "role": "high-priority pancreatic cancer mutation",
+          "disease_context": "pancreatic ductal adenocarcinoma"
+        },
+        {
+          "name": "KRAS G12V",
+          "gene": "KRAS",
+          "mutation": "G12V",
+          "role": "common solid-tumor KRAS mutation",
+          "disease_context": "lung, colorectal, and pancreatic cancer"
+        },
+        {
+          "name": "SOS1",
+          "gene": "SOS1",
+          "mutation": "wild-type pathway node",
+          "role": "guanine nucleotide exchange factor upstream of KRAS activation",
+          "disease_context": "KRAS pathway modulation"
+        }
+      ]
+    },
+    "findings": [
+      {
+        "agent": "validation",
+        "score": 0.7,
+        "label": "Review",
+        "evidence": [
+          "LogP may create solubility or exposure risk",
+          "Hydrogen bond donor count exceeds threshold"
+        ],
+        "metrics": {
+          "atom_count": 43,
+          "hetero_atom_count": 9,
+          "ring_count": 6,
+          "hydrogen_bond_donors": 9,
+          "hydrogen_bond_acceptors": 9,
+          "rotatable_bonds": 23,
+          "aromatic_atom_count": 0,
+          "halogen_count": 2,
+          "molecular_weight": 568.84,
+          "logp": 7.71
+        }
+      },
+      {
+        "agent": "features",
+        "score": 0.999,
+        "label": "Descriptor profile generated",
+        "evidence": [
+          "Computed approximate descriptors for KRAS pathway screening"
+        ],
+        "metrics": {
+          "atom_count": 43,
+          "hetero_atom_count": 9,
+          "ring_count": 6,
+          "hydrogen_bond_donors": 9,
+          "hydrogen_bond_acceptors": 9,
+          "rotatable_bonds": 23,
+          "aromatic_atom_count": 0,
+          "halogen_count": 2,
+          "molecular_weight": 568.84,
+          "logp": 7.71
+        }
+      },
+      {
+        "agent": "kras_target_fit",
+        "score": 0.998,
+        "label": "Predicted KRAS-active",
+        "evidence": [
+          "Trained model inference estimated KRAS pathway activity probability from RDKit descriptors, MACCS keys, and Morgan fingerprints",
+          "Model-powered score replaces the offline target-fit proxy when model artifacts and RDKit are available"
+        ],
+        "metrics": {
+          "target_family": "KRAS pathway",
+          "inference_mode": "trained_model",
+          "probability_active": 0.998079,
+          "predicted_label": 1,
+          "model_path": "C:\\Users\\emman\\OneDrive\\Desktop\\Portfolio_Git\\Agentic AI Drug Discovery Platform\\kras-mutant-inhibitor-discovery\\artifacts\\models\\kras_best_model.pkl",
+          "feature_count": 2226
+        }
+      },
+      {
+        "agent": "mutant_selectivity",
+        "score": 1.0,
+        "label": "Best hypothesis: G12D",
+        "evidence": [
+          "Generated a mutant-selectivity hypothesis for human review"
+        ],
+        "metrics": {
+          "kras_g12c_hypothesis": 0.71,
+          "kras_g12d_hypothesis": 1.0,
+          "kras_g12v_hypothesis": 0.73,
+          "sos1_hypothesis": 1.0
+        }
+      },
+      {
+        "agent": "admet",
+        "score": 0.421,
+        "label": "ADMET review",
+        "evidence": [
+          "Estimated ADMET suitability from size, lipophilicity, and flexibility"
+        ],
+        "metrics": {
+          "oral_exposure_proxy": 0.275,
+          "distribution_proxy": 0.946,
+          "metabolic_risk_proxy": 0.042
+        }
+      },
+      {
+        "agent": "toxicity",
+        "score": 0.93,
+        "label": "Low risk",
+        "evidence": [
+          "No simple toxicity motifs detected"
+        ],
+        "metrics": {
+          "structural_alert_count": 0,
+          "halogen_count": 2.0
+        }
+      },
+      {
+        "agent": "literature",
+        "score": 0.74,
+        "label": "KRAS evidence-ready",
+        "evidence": [
+          "Offline literature stub prepared for targets: KRAS G12C, KRAS G12D, KRAS G12V, SOS1",
+          "Future version should retrieve PubMed evidence for KRAS mutant selectivity, resistance, and cancer indication context"
+        ],
+        "metrics": {
+          "retrieval_mode": "offline_stub"
+        }
+      },
+      {
+        "agent": "manufacturability",
+        "score": 0.334,
+        "label": "Complex synthesis",
+        "evidence": [
+          "Estimated synthesis feasibility from ring count, flexibility, and hetero atom burden"
+        ],
+        "metrics": {
+          "synthetic_accessibility_proxy": 0.334
+        }
+      },
+      {
+        "agent": "clinical_relevance",
+        "score": 0.837,
+        "label": "Relevant for KRAS-driven oncology",
+        "evidence": [
+          "Indication focus: pancreatic cancer and lung adenocarcinoma",
+          "Clinical relevance aggregates target fit, mutant-selectivity hypothesis, ADMET, and toxicity signals"
+        ],
+        "metrics": {
+          "kras_target_fit": 0.998,
+          "mutant_selectivity": 1.0,
+          "admet": 0.421,
+          "toxicity": 0.93
+        }
+      }
+    ],
+    "overall_score": 0.825,
+    "overall_rank": 3,
+    "recommendation": "Advance"
+  },
+  {
+    "compound": "MRTX1133",
+    "smiles": "C#CC1=C(C=CC2=CC(=CC(=C21)C3=NC=C4C(=C3F)N=C(N=C4N5CC6CCC(C5)N6)OC[C@@]78CCCN7C[C@@H](C8)F)O)F",
+    "target_panel": {
+      "family": "KRAS pathway",
+      "indication_focus": "pancreatic cancer and lung adenocarcinoma",
+      "nodes": [
+        {
+          "name": "KRAS G12C",
+          "gene": "KRAS",
+          "mutation": "G12C",
+          "role": "clinically validated covalent inhibitor target",
+          "disease_context": "non-small cell lung cancer and colorectal cancer"
+        },
+        {
+          "name": "KRAS G12D",
+          "gene": "KRAS",
+          "mutation": "G12D",
+          "role": "high-priority pancreatic cancer mutation",
+          "disease_context": "pancreatic ductal adenocarcinoma"
+        },
+        {
+          "name": "KRAS G12V",
+          "gene": "KRAS",
+          "mutation": "G12V",
+          "role": "common solid-tumor KRAS mutation",
+          "disease_context": "lung, colorectal, and pancreatic cancer"
+        },
+        {
+          "name": "SOS1",
+          "gene": "SOS1",
+          "mutation": "wild-type pathway node",
+          "role": "guanine nucleotide exchange factor upstream of KRAS activation",
+          "disease_context": "KRAS pathway modulation"
+        }
+      ]
+    },
+    "findings": [
+      {
+        "agent": "validation",
+        "score": 0.7,
+        "label": "Review",
+        "evidence": [
+          "LogP may create solubility or exposure risk",
+          "Hydrogen bond donor count exceeds threshold"
+        ],
+        "metrics": {
+          "atom_count": 44,
+          "hetero_atom_count": 8,
+          "ring_count": 8,
+          "hydrogen_bond_donors": 8,
+          "hydrogen_bond_acceptors": 8,
+          "rotatable_bonds": 22,
+          "aromatic_atom_count": 0,
+          "halogen_count": 3,
+          "molecular_weight": 569.39,
+          "logp": 8.79
+        }
+      },
+      {
+        "agent": "features",
+        "score": 0.972,
+        "label": "Descriptor profile generated",
+        "evidence": [
+          "Computed approximate descriptors for KRAS pathway screening"
+        ],
+        "metrics": {
+          "atom_count": 44,
+          "hetero_atom_count": 8,
+          "ring_count": 8,
+          "hydrogen_bond_donors": 8,
+          "hydrogen_bond_acceptors": 8,
+          "rotatable_bonds": 22,
+          "aromatic_atom_count": 0,
+          "halogen_count": 3,
+          "molecular_weight": 569.39,
+          "logp": 8.79
+        }
+      },
+      {
+        "agent": "kras_target_fit",
+        "score": 1.0,
+        "label": "Predicted KRAS-active",
+        "evidence": [
+          "Trained model inference estimated KRAS pathway activity probability from RDKit descriptors, MACCS keys, and Morgan fingerprints",
+          "Model-powered score replaces the offline target-fit proxy when model artifacts and RDKit are available"
+        ],
+        "metrics": {
+          "target_family": "KRAS pathway",
+          "inference_mode": "trained_model",
+          "probability_active": 0.999651,
+          "predicted_label": 1,
+          "model_path": "C:\\Users\\emman\\OneDrive\\Desktop\\Portfolio_Git\\Agentic AI Drug Discovery Platform\\kras-mutant-inhibitor-discovery\\artifacts\\models\\kras_best_model.pkl",
+          "feature_count": 2226
+        }
+      },
+      {
+        "agent": "mutant_selectivity",
+        "score": 1.0,
+        "label": "Best hypothesis: G12D",
+        "evidence": [
+          "Generated a mutant-selectivity hypothesis for human review"
+        ],
+        "metrics": {
+          "kras_g12c_hypothesis": 0.59,
+          "kras_g12d_hypothesis": 1.0,
+          "kras_g12v_hypothesis": 0.9,
+          "sos1_hypothesis": 1.0
+        }
+      },
+      {
+        "agent": "admet",
+        "score": 0.379,
+        "label": "ADMET review",
+        "evidence": [
+          "Estimated ADMET suitability from size, lipophilicity, and flexibility"
+        ],
+        "metrics": {
+          "oral_exposure_proxy": 0.109,
+          "distribution_proxy": 0.945,
+          "metabolic_risk_proxy": 0.083
+        }
+      },
+      {
+        "agent": "toxicity",
+        "score": 0.93,
+        "label": "Low risk",
+        "evidence": [
+          "No simple toxicity motifs detected"
+        ],
+        "metrics": {
+          "structural_alert_count": 0,
+          "halogen_count": 3.0
+        }
+      },
+      {
+        "agent": "literature",
+        "score": 0.74,
+        "label": "KRAS evidence-ready",
+        "evidence": [
+          "Offline literature stub prepared for targets: KRAS G12C, KRAS G12D, KRAS G12V, SOS1",
+          "Future version should retrieve PubMed evidence for KRAS mutant selectivity, resistance, and cancer indication context"
+        ],
+        "metrics": {
+          "retrieval_mode": "offline_stub"
+        }
+      },
+      {
+        "agent": "manufacturability",
+        "score": 0.256,
+        "label": "Complex synthesis",
+        "evidence": [
+          "Estimated synthesis feasibility from ring count, flexibility, and hetero atom burden"
+        ],
+        "metrics": {
+          "synthetic_accessibility_proxy": 0.256
+        }
+      },
+      {
+        "agent": "clinical_relevance",
+        "score": 0.827,
+        "label": "Relevant for KRAS-driven oncology",
+        "evidence": [
+          "Indication focus: pancreatic cancer and lung adenocarcinoma",
+          "Clinical relevance aggregates target fit, mutant-selectivity hypothesis, ADMET, and toxicity signals"
+        ],
+        "metrics": {
+          "kras_target_fit": 1.0,
+          "mutant_selectivity": 1.0,
+          "admet": 0.379,
+          "toxicity": 0.93
+        }
+      }
+    ],
+    "overall_score": 0.814,
+    "overall_rank": 4,
+    "recommendation": "Advance with review"
+  }
+]

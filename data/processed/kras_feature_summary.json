@@ -1,0 +1,9 @@
+{
+  "input_training_rows": 1398,
+  "feature_rows": 1398,
+  "invalid_smiles": 0,
+  "descriptor_features": 12,
+  "maccs_features": 166,
+  "morgan_features": 2048,
+  "model_features": 2226
+}

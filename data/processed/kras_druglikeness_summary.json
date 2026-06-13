@@ -1,0 +1,8 @@
+{
+  "rows": 1398,
+  "passes_lipinski": 569,
+  "passes_veber": 988,
+  "passes_project_druglike": 817,
+  "active_project_druglike": 585,
+  "inactive_project_druglike": 232
+}

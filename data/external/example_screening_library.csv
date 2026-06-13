@@ -1,0 +1,4 @@
+compound,smiles,library,notes
+Aromatic amide control,O=C(NC1=CC=CC=C1)C1=CC=CC=C1,example,Simple aromatic amide previously predicted KRAS-inactive.
+Ethanol control,CCO,example,Small negative-control molecule.
+Benzimidazole-like fragment,Nc1nc2ccccc2[nH]1,example,Heteroaromatic fragment for pipeline smoke testing.

@@ -1,0 +1,19 @@
+{
+  "release": "v0.1-kras-zinc-screening",
+  "project": "Agentic AI KRAS Inhibitor Discovery",
+  "description": "Archival reproducibility snapshot for KRAS model training, cross-validation, ZINC screening, and hit triage.",
+  "date": "2026-06-10",
+  "target": "KRAS pathway with emphasis on KRAS G12C/G12D/G12V",
+  "screening_library": "Sampled ZINC lead-like library",
+  "screened_compounds": 5000,
+  "model": "XGBoost",
+  "holdout_roc_auc": 0.984467,
+  "holdout_pr_auc": 0.995673,
+  "cross_validation": {
+    "xgboost_roc_auc_mean": 0.967536,
+    "xgboost_roc_auc_std": 0.008136,
+    "random_forest_roc_auc_mean": 0.970421,
+    "random_forest_roc_auc_std": 0.010909
+  },
+  "validation_boundary": "Computational hit candidates only; not experimental KRAS inhibitors or clinical candidates."
+}
