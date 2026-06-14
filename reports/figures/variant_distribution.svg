@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520" role="img">
+<style>
+text { font-family: Arial, Helvetica, sans-serif; fill: #212529; }
+.title { font-size: 22px; font-weight: 700; }
+.subtitle { font-size: 12px; fill: #495057; }
+.axis { stroke: #495057; stroke-width: 1; }
+.grid { stroke: #e9ecef; stroke-width: 1; }
+.label { font-size: 12px; }
+.tick { font-size: 11px; fill: #495057; }
+</style>
+<text class="title" x="450.0" y="34" text-anchor="middle">Training Records by KRAS Pathway Subset</text>
+<line class="axis" x1="90" y1="80" x2="90" y2="420"/>
+<line class="axis" x1="90" y1="420" x2="860" y2="420"/>
+<line class="grid" x1="90" y1="420.0" x2="860" y2="420.0"/>
+<text class="tick" x="78" y="424.0" text-anchor="end">0</text>
+<line class="grid" x1="90" y1="352.0" x2="860" y2="352.0"/>
+<text class="tick" x="78" y="356.0" text-anchor="end">180</text>
+<line class="grid" x1="90" y1="284.0" x2="860" y2="284.0"/>
+<text class="tick" x="78" y="288.0" text-anchor="end">360</text>
+<line class="grid" x1="90" y1="216.0" x2="860" y2="216.0"/>
+<text class="tick" x="78" y="220.0" text-anchor="end">540</text>
+<line class="grid" x1="90" y1="148.0" x2="860" y2="148.0"/>
+<text class="tick" x="78" y="152.0" text-anchor="end">720</text>
+<line class="grid" x1="90" y1="80.0" x2="860" y2="80.0"/>
+<text class="tick" x="78" y="84.0" text-anchor="end">900</text>
+<rect x="124.0" y="90.2" width="113.2" height="329.8" fill="#2f9e44" rx="3"/>
+<text class="label" x="180.6" y="82.2" text-anchor="middle">873</text>
+<text class="tick" x="180.6" y="444" text-anchor="middle">G12C</text>
+<rect x="271.2" y="277.6" width="113.2" height="142.4" fill="#2f9e44" rx="3"/>
+<text class="label" x="327.8" y="269.6" text-anchor="middle">377</text>
+<text class="tick" x="327.8" y="444" text-anchor="middle">G12D</text>
+<rect x="418.4" y="393.2" width="113.2" height="26.8" fill="#2f9e44" rx="3"/>
+<text class="label" x="475.0" y="385.2" text-anchor="middle">71</text>
+<text class="tick" x="475.0" y="444" text-anchor="middle">G12V</text>
+<rect x="565.6" y="420.0" width="113.2" height="0.0" fill="#2f9e44" rx="3"/>
+<text class="label" x="622.2" y="412.0" text-anchor="middle">0</text>
+<text class="tick" x="622.2" y="444" text-anchor="middle">SOS1</text>
+<rect x="712.8" y="390.9" width="113.2" height="29.1" fill="#2f9e44" rx="3"/>
+<text class="label" x="769.4" y="382.9" text-anchor="middle">77</text>
+<text class="tick" x="769.4" y="444" text-anchor="middle">KRAS other</text>
+</svg>

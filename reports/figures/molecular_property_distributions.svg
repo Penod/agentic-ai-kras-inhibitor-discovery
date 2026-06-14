@@ -1,0 +1,178 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="760" viewBox="0 0 1100 760" role="img">
+<style>
+text { font-family: Arial, Helvetica, sans-serif; fill: #212529; }
+.title { font-size: 22px; font-weight: 700; }
+.subtitle { font-size: 12px; fill: #495057; }
+.axis { stroke: #495057; stroke-width: 1; }
+.grid { stroke: #e9ecef; stroke-width: 1; }
+.label { font-size: 12px; }
+.tick { font-size: 11px; fill: #495057; }
+</style>
+<text class="title" x="550.0" y="34" text-anchor="middle">Molecular Property Distributions by Activity Class</text>
+<text class="label" x="310.0" y="62" text-anchor="middle">Molecular Weight</text>
+<line class="axis" x1="70" y1="80" x2="70" y2="360"/>
+<line class="axis" x1="70" y1="360" x2="550" y2="360"/>
+<rect x="70.0" y="315.4" width="12.3" height="44.6" fill="#2f9e44" opacity="0.72"/>
+<rect x="83.3" y="348.8" width="12.3" height="11.2" fill="#f08c00" opacity="0.72"/>
+<rect x="96.7" y="80.0" width="12.3" height="280.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="110.0" y="320.9" width="12.3" height="39.1" fill="#f08c00" opacity="0.72"/>
+<rect x="123.3" y="302.2" width="12.3" height="57.8" fill="#2f9e44" opacity="0.72"/>
+<rect x="136.7" y="288.5" width="12.3" height="71.5" fill="#f08c00" opacity="0.72"/>
+<rect x="150.0" y="349.3" width="12.3" height="10.7" fill="#2f9e44" opacity="0.72"/>
+<rect x="163.3" y="341.2" width="12.3" height="18.8" fill="#f08c00" opacity="0.72"/>
+<rect x="176.7" y="236.2" width="12.3" height="123.8" fill="#2f9e44" opacity="0.72"/>
+<rect x="190.0" y="356.4" width="12.3" height="3.6" fill="#f08c00" opacity="0.72"/>
+<rect x="203.3" y="351.9" width="12.3" height="8.1" fill="#2f9e44" opacity="0.72"/>
+<rect x="216.7" y="358.5" width="12.3" height="1.5" fill="#f08c00" opacity="0.72"/>
+<rect x="230.0" y="359.0" width="12.3" height="1.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="243.3" y="359.5" width="12.3" height="0.5" fill="#f08c00" opacity="0.72"/>
+<rect x="256.7" y="358.0" width="12.3" height="2.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="270.0" y="359.5" width="12.3" height="0.5" fill="#f08c00" opacity="0.72"/>
+<rect x="283.3" y="353.4" width="12.3" height="6.6" fill="#2f9e44" opacity="0.72"/>
+<rect x="296.7" y="359.5" width="12.3" height="0.5" fill="#f08c00" opacity="0.72"/>
+<rect x="310.0" y="360.0" width="12.3" height="0.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="323.3" y="359.5" width="12.3" height="0.5" fill="#f08c00" opacity="0.72"/>
+<rect x="336.7" y="359.0" width="12.3" height="1.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="350.0" y="360.0" width="12.3" height="0.0" fill="#f08c00" opacity="0.72"/>
+<rect x="363.3" y="360.0" width="12.3" height="0.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="376.7" y="360.0" width="12.3" height="0.0" fill="#f08c00" opacity="0.72"/>
+<rect x="390.0" y="357.0" width="12.3" height="3.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="403.3" y="360.0" width="12.3" height="0.0" fill="#f08c00" opacity="0.72"/>
+<rect x="416.7" y="355.9" width="12.3" height="4.1" fill="#2f9e44" opacity="0.72"/>
+<rect x="430.0" y="358.0" width="12.3" height="2.0" fill="#f08c00" opacity="0.72"/>
+<rect x="443.3" y="359.0" width="12.3" height="1.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="456.7" y="358.5" width="12.3" height="1.5" fill="#f08c00" opacity="0.72"/>
+<rect x="470.0" y="360.0" width="12.3" height="0.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="483.3" y="359.5" width="12.3" height="0.5" fill="#f08c00" opacity="0.72"/>
+<rect x="496.7" y="358.5" width="12.3" height="1.5" fill="#2f9e44" opacity="0.72"/>
+<rect x="510.0" y="357.5" width="12.3" height="2.5" fill="#f08c00" opacity="0.72"/>
+<rect x="523.3" y="351.4" width="12.3" height="8.6" fill="#2f9e44" opacity="0.72"/>
+<rect x="536.7" y="359.0" width="12.3" height="1.0" fill="#f08c00" opacity="0.72"/>
+<text class="tick" x="70" y="382" text-anchor="start">391.5</text>
+<text class="tick" x="550" y="382" text-anchor="end">2656.1</text>
+<text class="label" x="830.0" y="62" text-anchor="middle">LogP</text>
+<line class="axis" x1="590" y1="80" x2="590" y2="360"/>
+<line class="axis" x1="590" y1="360" x2="1070" y2="360"/>
+<rect x="590.0" y="350.3" width="12.3" height="9.7" fill="#2f9e44" opacity="0.72"/>
+<rect x="603.3" y="358.9" width="12.3" height="1.1" fill="#f08c00" opacity="0.72"/>
+<rect x="616.7" y="358.3" width="12.3" height="1.7" fill="#2f9e44" opacity="0.72"/>
+<rect x="630.0" y="358.9" width="12.3" height="1.1" fill="#f08c00" opacity="0.72"/>
+<rect x="643.3" y="360.0" width="12.3" height="0.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="656.7" y="358.9" width="12.3" height="1.1" fill="#f08c00" opacity="0.72"/>
+<rect x="670.0" y="360.0" width="12.3" height="0.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="683.3" y="360.0" width="12.3" height="0.0" fill="#f08c00" opacity="0.72"/>
+<rect x="696.7" y="360.0" width="12.3" height="0.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="710.0" y="359.4" width="12.3" height="0.6" fill="#f08c00" opacity="0.72"/>
+<rect x="723.3" y="359.4" width="12.3" height="0.6" fill="#2f9e44" opacity="0.72"/>
+<rect x="736.7" y="359.4" width="12.3" height="0.6" fill="#f08c00" opacity="0.72"/>
+<rect x="750.0" y="356.6" width="12.3" height="3.4" fill="#2f9e44" opacity="0.72"/>
+<rect x="763.3" y="360.0" width="12.3" height="0.0" fill="#f08c00" opacity="0.72"/>
+<rect x="776.7" y="357.7" width="12.3" height="2.3" fill="#2f9e44" opacity="0.72"/>
+<rect x="790.0" y="360.0" width="12.3" height="0.0" fill="#f08c00" opacity="0.72"/>
+<rect x="803.3" y="357.1" width="12.3" height="2.9" fill="#2f9e44" opacity="0.72"/>
+<rect x="816.7" y="357.7" width="12.3" height="2.3" fill="#f08c00" opacity="0.72"/>
+<rect x="830.0" y="358.3" width="12.3" height="1.7" fill="#2f9e44" opacity="0.72"/>
+<rect x="843.3" y="356.6" width="12.3" height="3.4" fill="#f08c00" opacity="0.72"/>
+<rect x="856.7" y="360.0" width="12.3" height="0.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="870.0" y="352.6" width="12.3" height="7.4" fill="#f08c00" opacity="0.72"/>
+<rect x="883.3" y="358.3" width="12.3" height="1.7" fill="#2f9e44" opacity="0.72"/>
+<rect x="896.7" y="350.3" width="12.3" height="9.7" fill="#f08c00" opacity="0.72"/>
+<rect x="910.0" y="358.9" width="12.3" height="1.1" fill="#2f9e44" opacity="0.72"/>
+<rect x="923.3" y="345.2" width="12.3" height="14.8" fill="#f08c00" opacity="0.72"/>
+<rect x="936.7" y="348.0" width="12.3" height="12.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="950.0" y="323.5" width="12.3" height="36.5" fill="#f08c00" opacity="0.72"/>
+<rect x="963.3" y="235.1" width="12.3" height="124.9" fill="#2f9e44" opacity="0.72"/>
+<rect x="976.7" y="313.8" width="12.3" height="46.2" fill="#f08c00" opacity="0.72"/>
+<rect x="990.0" y="80.0" width="12.3" height="280.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="1003.3" y="332.1" width="12.3" height="27.9" fill="#f08c00" opacity="0.72"/>
+<rect x="1016.7" y="195.2" width="12.3" height="164.8" fill="#2f9e44" opacity="0.72"/>
+<rect x="1030.0" y="340.6" width="12.3" height="19.4" fill="#f08c00" opacity="0.72"/>
+<rect x="1043.3" y="344.0" width="12.3" height="16.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="1056.7" y="357.7" width="12.3" height="2.3" fill="#f08c00" opacity="0.72"/>
+<text class="tick" x="590" y="382" text-anchor="start">-12.7</text>
+<text class="tick" x="1070" y="382" text-anchor="end">8.2</text>
+<text class="label" x="310.0" y="392" text-anchor="middle">TPSA</text>
+<line class="axis" x1="70" y1="410" x2="70" y2="690"/>
+<line class="axis" x1="70" y1="690" x2="550" y2="690"/>
+<rect x="70.0" y="410.0" width="12.3" height="280.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="83.3" y="580.4" width="12.3" height="109.6" fill="#f08c00" opacity="0.72"/>
+<rect x="96.7" y="536.4" width="12.3" height="153.6" fill="#2f9e44" opacity="0.72"/>
+<rect x="110.0" y="674.3" width="12.3" height="15.7" fill="#f08c00" opacity="0.72"/>
+<rect x="123.3" y="582.5" width="12.3" height="107.5" fill="#2f9e44" opacity="0.72"/>
+<rect x="136.7" y="674.3" width="12.3" height="15.7" fill="#f08c00" opacity="0.72"/>
+<rect x="150.0" y="681.1" width="12.3" height="8.9" fill="#2f9e44" opacity="0.72"/>
+<rect x="163.3" y="681.6" width="12.3" height="8.4" fill="#f08c00" opacity="0.72"/>
+<rect x="176.7" y="689.5" width="12.3" height="0.5" fill="#2f9e44" opacity="0.72"/>
+<rect x="190.0" y="689.0" width="12.3" height="1.0" fill="#f08c00" opacity="0.72"/>
+<rect x="203.3" y="689.0" width="12.3" height="1.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="216.7" y="689.0" width="12.3" height="1.0" fill="#f08c00" opacity="0.72"/>
+<rect x="230.0" y="689.0" width="12.3" height="1.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="243.3" y="689.0" width="12.3" height="1.0" fill="#f08c00" opacity="0.72"/>
+<rect x="256.7" y="689.0" width="12.3" height="1.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="270.0" y="690.0" width="12.3" height="0.0" fill="#f08c00" opacity="0.72"/>
+<rect x="283.3" y="690.0" width="12.3" height="0.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="296.7" y="690.0" width="12.3" height="0.0" fill="#f08c00" opacity="0.72"/>
+<rect x="310.0" y="690.0" width="12.3" height="0.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="323.3" y="690.0" width="12.3" height="0.0" fill="#f08c00" opacity="0.72"/>
+<rect x="336.7" y="689.5" width="12.3" height="0.5" fill="#2f9e44" opacity="0.72"/>
+<rect x="350.0" y="690.0" width="12.3" height="0.0" fill="#f08c00" opacity="0.72"/>
+<rect x="363.3" y="684.8" width="12.3" height="5.2" fill="#2f9e44" opacity="0.72"/>
+<rect x="376.7" y="687.9" width="12.3" height="2.1" fill="#f08c00" opacity="0.72"/>
+<rect x="390.0" y="687.4" width="12.3" height="2.6" fill="#2f9e44" opacity="0.72"/>
+<rect x="403.3" y="689.5" width="12.3" height="0.5" fill="#f08c00" opacity="0.72"/>
+<rect x="416.7" y="690.0" width="12.3" height="0.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="430.0" y="689.0" width="12.3" height="1.0" fill="#f08c00" opacity="0.72"/>
+<rect x="443.3" y="690.0" width="12.3" height="0.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="456.7" y="689.0" width="12.3" height="1.0" fill="#f08c00" opacity="0.72"/>
+<rect x="470.0" y="690.0" width="12.3" height="0.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="483.3" y="690.0" width="12.3" height="0.0" fill="#f08c00" opacity="0.72"/>
+<rect x="496.7" y="687.4" width="12.3" height="2.6" fill="#2f9e44" opacity="0.72"/>
+<rect x="510.0" y="690.0" width="12.3" height="0.0" fill="#f08c00" opacity="0.72"/>
+<rect x="523.3" y="682.1" width="12.3" height="7.9" fill="#2f9e44" opacity="0.72"/>
+<rect x="536.7" y="686.9" width="12.3" height="3.1" fill="#f08c00" opacity="0.72"/>
+<text class="tick" x="70" y="712" text-anchor="start">35.5</text>
+<text class="tick" x="550" y="712" text-anchor="end">1217.8</text>
+<text class="label" x="830.0" y="392" text-anchor="middle">Rotatable Bonds</text>
+<line class="axis" x1="590" y1="410" x2="590" y2="690"/>
+<line class="axis" x1="590" y1="690" x2="1070" y2="690"/>
+<rect x="590.0" y="640.0" width="12.3" height="50.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="603.3" y="672.9" width="12.3" height="17.1" fill="#f08c00" opacity="0.72"/>
+<rect x="616.7" y="410.0" width="12.3" height="280.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="630.0" y="592.9" width="12.3" height="97.1" fill="#f08c00" opacity="0.72"/>
+<rect x="643.3" y="537.6" width="12.3" height="152.4" fill="#2f9e44" opacity="0.72"/>
+<rect x="656.7" y="670.0" width="12.3" height="20.0" fill="#f08c00" opacity="0.72"/>
+<rect x="670.0" y="673.3" width="12.3" height="16.7" fill="#2f9e44" opacity="0.72"/>
+<rect x="683.3" y="689.0" width="12.3" height="1.0" fill="#f08c00" opacity="0.72"/>
+<rect x="696.7" y="687.1" width="12.3" height="2.9" fill="#2f9e44" opacity="0.72"/>
+<rect x="710.0" y="688.6" width="12.3" height="1.4" fill="#f08c00" opacity="0.72"/>
+<rect x="723.3" y="690.0" width="12.3" height="0.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="736.7" y="688.6" width="12.3" height="1.4" fill="#f08c00" opacity="0.72"/>
+<rect x="750.0" y="690.0" width="12.3" height="0.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="763.3" y="689.5" width="12.3" height="0.5" fill="#f08c00" opacity="0.72"/>
+<rect x="776.7" y="690.0" width="12.3" height="0.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="790.0" y="690.0" width="12.3" height="0.0" fill="#f08c00" opacity="0.72"/>
+<rect x="803.3" y="690.0" width="12.3" height="0.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="816.7" y="690.0" width="12.3" height="0.0" fill="#f08c00" opacity="0.72"/>
+<rect x="830.0" y="689.5" width="12.3" height="0.5" fill="#2f9e44" opacity="0.72"/>
+<rect x="843.3" y="690.0" width="12.3" height="0.0" fill="#f08c00" opacity="0.72"/>
+<rect x="856.7" y="688.6" width="12.3" height="1.4" fill="#2f9e44" opacity="0.72"/>
+<rect x="870.0" y="689.0" width="12.3" height="1.0" fill="#f08c00" opacity="0.72"/>
+<rect x="883.3" y="686.2" width="12.3" height="3.8" fill="#2f9e44" opacity="0.72"/>
+<rect x="896.7" y="689.0" width="12.3" height="1.0" fill="#f08c00" opacity="0.72"/>
+<rect x="910.0" y="687.1" width="12.3" height="2.9" fill="#2f9e44" opacity="0.72"/>
+<rect x="923.3" y="689.0" width="12.3" height="1.0" fill="#f08c00" opacity="0.72"/>
+<rect x="936.7" y="690.0" width="12.3" height="0.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="950.0" y="689.5" width="12.3" height="0.5" fill="#f08c00" opacity="0.72"/>
+<rect x="963.3" y="690.0" width="12.3" height="0.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="976.7" y="690.0" width="12.3" height="0.0" fill="#f08c00" opacity="0.72"/>
+<rect x="990.0" y="690.0" width="12.3" height="0.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="1003.3" y="690.0" width="12.3" height="0.0" fill="#f08c00" opacity="0.72"/>
+<rect x="1016.7" y="690.0" width="12.3" height="0.0" fill="#2f9e44" opacity="0.72"/>
+<rect x="1030.0" y="688.1" width="12.3" height="1.9" fill="#f08c00" opacity="0.72"/>
+<rect x="1043.3" y="680.5" width="12.3" height="9.5" fill="#2f9e44" opacity="0.72"/>
+<rect x="1056.7" y="688.1" width="12.3" height="1.9" fill="#f08c00" opacity="0.72"/>
+<text class="tick" x="590" y="712" text-anchor="start">1.0</text>
+<text class="tick" x="1070" y="712" text-anchor="end">62.0</text>
+<rect x="780" y="704" width="14" height="14" fill="#2f9e44" opacity="0.72"/><text class="label" x="802" y="716">Active</text>
+<rect x="870" y="704" width="14" height="14" fill="#f08c00" opacity="0.72"/><text class="label" x="892" y="716">Inactive</text>
+</svg>

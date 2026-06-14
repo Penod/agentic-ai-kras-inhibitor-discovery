@@ -35,6 +35,7 @@ kras-triage-hits = "kras_discovery.screening.hit_triage:main"
 kras-hit-report = "kras_discovery.screening.hit_report:main"
 kras-model-performance-report = "kras_discovery.modeling.performance_report:main"
 kras-markdown-to-pdf = "kras_discovery.reports.markdown_pdf:main"
+kras-generate-figures = "kras_discovery.visualization.static_plots:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

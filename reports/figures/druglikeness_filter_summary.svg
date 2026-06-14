@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="520" viewBox="0 0 900 520" role="img">
+<style>
+text { font-family: Arial, Helvetica, sans-serif; fill: #212529; }
+.title { font-size: 22px; font-weight: 700; }
+.subtitle { font-size: 12px; fill: #495057; }
+.axis { stroke: #495057; stroke-width: 1; }
+.grid { stroke: #e9ecef; stroke-width: 1; }
+.label { font-size: 12px; }
+.tick { font-size: 11px; fill: #495057; }
+</style>
+<text class="title" x="450.0" y="34" text-anchor="middle">Drug-Likeness Filter Summary</text>
+<line class="axis" x1="90" y1="80" x2="90" y2="420"/>
+<line class="axis" x1="90" y1="420" x2="860" y2="420"/>
+<line class="grid" x1="90" y1="420.0" x2="860" y2="420.0"/>
+<text class="tick" x="78" y="424.0" text-anchor="end">0</text>
+<line class="grid" x1="90" y1="352.0" x2="860" y2="352.0"/>
+<text class="tick" x="78" y="356.0" text-anchor="end">400</text>
+<line class="grid" x1="90" y1="284.0" x2="860" y2="284.0"/>
+<text class="tick" x="78" y="288.0" text-anchor="end">800</text>
+<line class="grid" x1="90" y1="216.0" x2="860" y2="216.0"/>
+<text class="tick" x="78" y="220.0" text-anchor="end">1,200</text>
+<line class="grid" x1="90" y1="148.0" x2="860" y2="148.0"/>
+<text class="tick" x="78" y="152.0" text-anchor="end">1,600</text>
+<line class="grid" x1="90" y1="80.0" x2="860" y2="80.0"/>
+<text class="tick" x="78" y="84.0" text-anchor="end">2,000</text>
+<rect x="124.0" y="182.3" width="150.0" height="237.7" fill="#f08c00" rx="3"/>
+<text class="label" x="199.0" y="174.3" text-anchor="middle">1,398</text>
+<text class="tick" x="199.0" y="444" text-anchor="middle">All</text>
+<rect x="308.0" y="323.3" width="150.0" height="96.7" fill="#f08c00" rx="3"/>
+<text class="label" x="383.0" y="315.3" text-anchor="middle">569</text>
+<text class="tick" x="383.0" y="444" text-anchor="middle">Lipinski</text>
+<rect x="492.0" y="252.0" width="150.0" height="168.0" fill="#f08c00" rx="3"/>
+<text class="label" x="567.0" y="244.0" text-anchor="middle">988</text>
+<text class="tick" x="567.0" y="444" text-anchor="middle">Veber</text>
+<rect x="676.0" y="281.1" width="150.0" height="138.9" fill="#f08c00" rx="3"/>
+<text class="label" x="751.0" y="273.1" text-anchor="middle">817</text>
+<text class="tick" x="751.0" y="444" text-anchor="middle">Project drug-like</text>
+</svg>

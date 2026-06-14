@@ -260,6 +260,7 @@ python -m kras_discovery.validation.known_inhibitors
 python -m kras_discovery.screening.batch_screen --input data/external/example_screening_library.csv
 python -m kras_discovery.screening.hit_triage --input data/processed/batch_screening/ranked_screening_results.csv
 python -m kras_discovery.screening.hit_report
+python -m kras_discovery.visualization.static_plots
 ```
 
 See [docs/reproducibility_protocol.md](docs/reproducibility_protocol.md) for full details.
@@ -271,12 +272,16 @@ Key artifacts:
 ```text
 reports/model_performance_summary.md
 reports/model_interpretation_report.md
+reports/statistical_exploration_summary.md
 reports/zinc_hit_triage_report.md
 reports/zinc_hit_triage_report.pdf
+reports/figures/
 releases/v0.1-kras-zinc-screening.zip
 ```
 
 The release snapshot preserves the generated evidence for review because live ChEMBL results may change over time.
+
+The statistical exploration report is generated from saved CSV and JSON outputs. It includes the ChEMBL curation funnel, activity-class balance, KRAS mutation distribution, molecular property distributions, drug-likeness summaries, holdout confusion matrices, cross-validation ROC-AUC, feature importance, and ZINC22 screening triage figures. ROC and precision-recall curves are not included in this report yet because the current saved outputs preserve aggregate metrics rather than per-compound holdout prediction scores.
 
 ## Engineering Tradeoffs
 
