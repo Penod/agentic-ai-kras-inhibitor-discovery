@@ -137,6 +137,7 @@ The training pipeline writes:
 data/processed/model_metrics.csv
 data/processed/cross_validation_metrics.csv
 data/processed/model_comparison.json
+data/processed/holdout_predictions.csv
 data/processed/confusion_matrices/
 artifacts/models/kras_best_model.pkl
 artifacts/models/feature_columns.json
@@ -281,7 +282,7 @@ releases/v0.1-kras-zinc-screening.zip
 
 The release snapshot preserves the generated evidence for review because live ChEMBL results may change over time.
 
-The statistical exploration report is generated from saved CSV and JSON outputs. It includes the ChEMBL curation funnel, activity-class balance, KRAS mutation distribution, molecular property distributions, drug-likeness summaries, holdout confusion matrices, cross-validation ROC-AUC, feature importance, and ZINC22 screening triage figures. ROC and precision-recall curves are not included in this report yet because the current saved outputs preserve aggregate metrics rather than per-compound holdout prediction scores.
+The statistical exploration report is generated from saved CSV and JSON outputs. It includes the ChEMBL curation funnel, activity-class balance, KRAS mutation distribution, molecular property distributions, drug-likeness summaries, holdout confusion matrices, cross-validation ROC-AUC, ROC and precision-recall curves when holdout prediction scores are available, feature importance, and ZINC22 screening triage figures.
 
 ## Engineering Tradeoffs
 
@@ -313,4 +314,3 @@ The next version should add:
 - PubMed/RAG evidence retrieval with citations.
 - Better mapping of important MACCS/Morgan features back to chemical motifs.
 - AWS Batch or ECS deployment for larger screening runs.
-

@@ -164,7 +164,7 @@ def positive_scores(model: Any, x_test: Any) -> Any:
     return model.predict(x_test)
 
 
-def evaluate_model(name: str, model: Any, x_test: Any, y_test: Any, deps: dict[str, Any]) -> tuple[dict[str, str], list[list[int]]]:
+def evaluate_model(name: str, model: Any, x_test: Any, y_test: Any, deps: dict[str, Any]) -> tuple[dict[str, str], list[list[int]], Any, Any]:
     y_pred = model.predict(x_test)
     y_score = positive_scores(model, x_test)
 
@@ -178,7 +178,7 @@ def evaluate_model(name: str, model: Any, x_test: Any, y_test: Any, deps: dict[s
         "pr_auc": deps["average_precision_score"](y_test, y_score),
     }
     matrix = deps["confusion_matrix"](y_test, y_pred, labels=[0, 1]).tolist()
-    return ({key: f"{value:.6f}" if isinstance(value, float) else value for key, value in metrics.items()}, matrix)
+    return ({key: f"{value:.6f}" if isinstance(value, float) else value for key, value in metrics.items()}, matrix, y_pred, y_score)
 
 
 def write_metrics_csv(path: Path, metrics_rows: list[dict[str, str]]) -> None:
@@ -221,6 +221,53 @@ def write_confusion_matrix(path: Path, matrix: list[list[int]]) -> None:
         writer.writerow(["actual/predicted", "predicted_inactive_0", "predicted_active_1"])
         writer.writerow(["actual_inactive_0", matrix[0][0], matrix[0][1]])
         writer.writerow(["actual_active_1", matrix[1][0], matrix[1][1]])
+
+
+def write_holdout_predictions(path: Path, rows: list[dict[str, str]]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    fieldnames = [
+        "model",
+        "holdout_index",
+        "molecule_chembl_id",
+        "canonical_smiles",
+        "target_label",
+        "variant_or_node",
+        "actual_label",
+        "predicted_label",
+        "positive_score",
+    ]
+    with path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def build_holdout_prediction_rows(
+    *,
+    model_name: str,
+    source_rows: list[dict[str, str]],
+    holdout_indices: Any,
+    y_test: Any,
+    y_pred: Any,
+    y_score: Any,
+) -> list[dict[str, str]]:
+    prediction_rows: list[dict[str, str]] = []
+    for position, source_index in enumerate(holdout_indices):
+        source = source_rows[int(source_index)]
+        prediction_rows.append(
+            {
+                "model": model_name,
+                "holdout_index": str(int(source_index)),
+                "molecule_chembl_id": source.get("molecule_chembl_id", ""),
+                "canonical_smiles": source.get("canonical_smiles", ""),
+                "target_label": source.get("target_label", ""),
+                "variant_or_node": source.get("variant_or_node", ""),
+                "actual_label": str(int(y_test[position])),
+                "predicted_label": str(int(y_pred[position])),
+                "positive_score": f"{float(y_score[position]):.12f}",
+            }
+        )
+    return prediction_rows
 
 
 def metric_value(row: dict[str, str], metric: str) -> float:
@@ -309,9 +356,11 @@ def train_and_evaluate(
         random_state=random_state,
     )
 
-    x_train, x_test, y_train, y_test = deps["train_test_split"](
+    row_indices = np.arange(len(matrix.rows))
+    x_train, x_test, y_train, y_test, _, holdout_indices = deps["train_test_split"](
         x,
         y,
+        row_indices,
         test_size=test_size,
         random_state=random_state,
         stratify=y,
@@ -320,12 +369,23 @@ def train_and_evaluate(
     metrics_rows: list[dict[str, str]] = []
     confusion_matrices: dict[str, list[list[int]]] = {}
     fitted_models: dict[str, Any] = {}
+    holdout_prediction_rows: list[dict[str, str]] = []
     for name, model in build_models(deps, random_state).items():
         model.fit(x_train, y_train)
-        metrics, matrix_values = evaluate_model(name, model, x_test, y_test, deps)
+        metrics, matrix_values, y_pred, y_score = evaluate_model(name, model, x_test, y_test, deps)
         metrics_rows.append(metrics)
         confusion_matrices[name] = matrix_values
         fitted_models[name] = model
+        holdout_prediction_rows.extend(
+            build_holdout_prediction_rows(
+                model_name=name,
+                source_rows=matrix.rows,
+                holdout_indices=holdout_indices,
+                y_test=y_test,
+                y_pred=y_pred,
+                y_score=y_score,
+            )
+        )
 
     metrics_rows.sort(key=lambda row: metric_value(row, selection_metric), reverse=True)
     best_model_name = metrics_rows[0]["model"]
@@ -335,6 +395,7 @@ def train_and_evaluate(
     model_dir.mkdir(parents=True, exist_ok=True)
     write_metrics_csv(output_dir / "model_metrics.csv", metrics_rows)
     write_cross_validation_csv(output_dir / "cross_validation_metrics.csv", cv_rows)
+    write_holdout_predictions(output_dir / "holdout_predictions.csv", holdout_prediction_rows)
     for name, matrix_values in confusion_matrices.items():
         write_confusion_matrix(output_dir / "confusion_matrices" / f"{name}.csv", matrix_values)
 

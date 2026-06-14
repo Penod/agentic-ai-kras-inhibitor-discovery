@@ -8,6 +8,7 @@ This report collects reproducible figures generated from saved project outputs. 
 - `data/processed/kras_model_matrix.csv`
 - `data/processed/kras_druglikeness_summary.json`
 - `data/processed/model_metrics.csv`
+- `data/processed/holdout_predictions.csv`
 - `data/processed/cross_validation_metrics.csv`
 - `data/processed/confusion_matrices/*.csv`
 - `data/processed/interpretation/feature_importance.csv`
@@ -63,6 +64,14 @@ Five-fold cross-validation for XGBoost produced mean ROC-AUC `0.968` with standa
 
 ![Cross-validation ROC-AUC comparison](figures/cross_validation_roc_auc.svg)
 
+### Holdout ROC curves
+
+![Holdout ROC curves](figures/holdout_roc_curves.svg)
+
+### Holdout precision-recall curves
+
+![Holdout precision-recall curves](figures/holdout_precision_recall_curves.svg)
+
 ### Holdout confusion matrices
 
 ![Holdout confusion matrices](figures/confusion_matrices.svg)
@@ -86,7 +95,7 @@ Five-fold cross-validation for XGBoost produced mean ROC-AUC `0.968` with standa
 ## Notes and Limitations
 
 - These figures are generated from saved project artifacts, not from a fresh ChEMBL or ZINC22 download.
-- ROC and precision-recall curves are not included here because the current saved outputs store aggregate metrics and confusion matrices, not per-compound prediction scores for the holdout split.
+- ROC and precision-recall curves are generated when `data/processed/holdout_predictions.csv` is available. Rerun model training first if that file is missing.
 - The ZINC22 hit triage results are computational predictions and should be treated as prioritization evidence for docking, molecular dynamics, medicinal chemistry review, and experimental validation.
 
 ## Reproduce

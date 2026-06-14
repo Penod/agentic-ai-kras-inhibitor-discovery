@@ -314,6 +314,83 @@ def scatter_plot(path: Path, rows: list[dict[str, str]]) -> None:
     write_svg(path, width, height, body)
 
 
+def curve_points(labels: list[int], scores: list[float], curve_type: str) -> tuple[list[tuple[float, float]], float]:
+    grouped: dict[float, list[int]] = {}
+    for score, label in zip(scores, labels):
+        grouped.setdefault(score, []).append(label)
+    grouped_items = sorted(grouped.items(), reverse=True)
+    positives = sum(labels)
+    negatives = len(labels) - positives
+    if positives == 0 or negatives == 0:
+        return [], 0.0
+
+    if curve_type == "roc":
+        points = [(0.0, 0.0)]
+        tp = fp = 0
+        for _, group_labels in grouped_items:
+            tp += sum(1 for label in group_labels if label == 1)
+            fp += sum(1 for label in group_labels if label == 0)
+            points.append((fp / negatives, tp / positives))
+        points.append((1.0, 1.0))
+        auc = 0.0
+        for (x1, y1), (x2, y2) in zip(points, points[1:]):
+            auc += (x2 - x1) * (y1 + y2) / 2
+    else:
+        points = [(0.0, 1.0)]
+        tp = fp = 0
+        previous_recall = 0.0
+        auc = 0.0
+        for _, group_labels in grouped_items:
+            tp += sum(1 for label in group_labels if label == 1)
+            fp += sum(1 for label in group_labels if label == 0)
+            recall = tp / positives
+            precision = tp / max(1, tp + fp)
+            points.append((recall, precision))
+            auc += (recall - previous_recall) * precision
+            previous_recall = recall
+    return points, auc
+
+
+def line_curve_chart(path: Path, title: str, prediction_rows: list[dict[str, str]], curve_type: str) -> None:
+    width, height = 900, 620
+    left, right, top, bottom = 90, 250, 80, 90
+    plot_w, plot_h = width - left - right, height - top - bottom
+    colors = [PURPLE, BLUE, GREEN, ORANGE, RED, GRAY, "#15aabf"]
+    models = list(dict.fromkeys(row.get("model", "") for row in prediction_rows))
+    body = [
+        f'<text class="title" x="{width/2}" y="34" text-anchor="middle">{esc(title)}</text>',
+        f'<line class="axis" x1="{left}" y1="{top}" x2="{left}" y2="{top + plot_h}"/>',
+        f'<line class="axis" x1="{left}" y1="{top + plot_h}" x2="{left + plot_w}" y2="{top + plot_h}"/>',
+    ]
+    for i in range(6):
+        x = left + plot_w * i / 5
+        y = top + plot_h - plot_h * i / 5
+        body.append(f'<line class="grid" x1="{x:.1f}" y1="{top}" x2="{x:.1f}" y2="{top + plot_h}"/>')
+        body.append(f'<line class="grid" x1="{left}" y1="{y:.1f}" x2="{left + plot_w}" y2="{y:.1f}"/>')
+        body.append(f'<text class="tick" x="{x:.1f}" y="{top + plot_h + 22}" text-anchor="middle">{i/5:.1f}</text>')
+        body.append(f'<text class="tick" x="{left - 12}" y="{y + 4:.1f}" text-anchor="end">{i/5:.1f}</text>')
+    x_label = "False Positive Rate" if curve_type == "roc" else "Recall"
+    y_label = "True Positive Rate" if curve_type == "roc" else "Precision"
+    body.append(f'<text class="label" x="{left + plot_w/2}" y="{height - 26}" text-anchor="middle">{x_label}</text>')
+    body.append(f'<text class="label" x="24" y="{top + plot_h/2}" transform="rotate(-90 24 {top + plot_h/2})" text-anchor="middle">{y_label}</text>')
+    legend_x, legend_y = left + plot_w + 35, top + 8
+    for idx, model in enumerate(models):
+        model_rows = [row for row in prediction_rows if row.get("model") == model]
+        labels = [to_int(row.get("actual_label")) for row in model_rows]
+        scores = [to_float(row.get("positive_score")) for row in model_rows]
+        points, auc = curve_points(labels, scores, curve_type)
+        if not points:
+            continue
+        coords = " ".join(f"{left + x * plot_w:.1f},{top + plot_h - y * plot_h:.1f}" for x, y in points)
+        color = colors[idx % len(colors)]
+        body.append(f'<polyline points="{coords}" fill="none" stroke="{color}" stroke-width="2"/>')
+        y = legend_y + idx * 24
+        metric_label = "AUC" if curve_type == "roc" else "AP"
+        body.append(f'<rect x="{legend_x}" y="{y - 10}" width="14" height="14" fill="{color}"/>')
+        body.append(f'<text class="label" x="{legend_x + 22}" y="{y + 2}">{esc(fmt_model(model))} ({metric_label} {auc:.3f})</text>')
+    write_svg(path, width, height, body)
+
+
 def generate_figures(processed_dir: Path = PROCESSED_DIR, figures_dir: Path = FIGURES_DIR) -> dict[str, Path]:
     figures_dir.mkdir(parents=True, exist_ok=True)
     outputs: dict[str, Path] = {}
@@ -407,6 +484,16 @@ def generate_figures(processed_dir: Path = PROCESSED_DIR, figures_dir: Path = FI
         cv_error_chart(path, cv_rows)
         outputs["Cross-validation ROC-AUC comparison"] = path
 
+    holdout_rows = read_csv_rows(processed_dir / "holdout_predictions.csv")
+    if holdout_rows:
+        path = figures_dir / "holdout_roc_curves.svg"
+        line_curve_chart(path, "Holdout ROC Curves", holdout_rows, "roc")
+        outputs["Holdout ROC curves"] = path
+
+        path = figures_dir / "holdout_precision_recall_curves.svg"
+        line_curve_chart(path, "Holdout Precision-Recall Curves", holdout_rows, "pr")
+        outputs["Holdout precision-recall curves"] = path
+
     matrix_dir = processed_dir / "confusion_matrices"
     if matrix_dir.exists():
         path = figures_dir / "confusion_matrices.svg"
@@ -478,6 +565,7 @@ def write_summary(outputs: dict[str, Path], processed_dir: Path = PROCESSED_DIR,
         "- `data/processed/kras_model_matrix.csv`",
         "- `data/processed/kras_druglikeness_summary.json`",
         "- `data/processed/model_metrics.csv`",
+        "- `data/processed/holdout_predictions.csv`",
         "- `data/processed/cross_validation_metrics.csv`",
         "- `data/processed/confusion_matrices/*.csv`",
         "- `data/processed/interpretation/feature_importance.csv`",
@@ -510,7 +598,7 @@ def write_summary(outputs: dict[str, Path], processed_dir: Path = PROCESSED_DIR,
             "## Notes and Limitations",
             "",
             "- These figures are generated from saved project artifacts, not from a fresh ChEMBL or ZINC22 download.",
-            "- ROC and precision-recall curves are not included here because the current saved outputs store aggregate metrics and confusion matrices, not per-compound prediction scores for the holdout split.",
+            "- ROC and precision-recall curves are generated when `data/processed/holdout_predictions.csv` is available. Rerun model training first if that file is missing.",
             "- The ZINC22 hit triage results are computational predictions and should be treated as prioritization evidence for docking, molecular dynamics, medicinal chemistry review, and experimental validation.",
             "",
             "## Reproduce",
