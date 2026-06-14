@@ -3,7 +3,14 @@ import unittest
 from pathlib import Path
 
 from kras_discovery.modeling.dataset import class_counts, is_numeric_feature_column, read_model_matrix
-from kras_discovery.modeling.train_models import ModelingDependencyError, effective_cv_folds, import_modeling_dependencies
+from kras_discovery.modeling.train_models import (
+    ModelingDependencyError,
+    effective_cv_folds,
+    import_modeling_dependencies,
+    molecule_group_keys,
+    scaffold_group_keys,
+    split_indices,
+)
 
 
 class ModelingDatasetTest(unittest.TestCase):
@@ -70,6 +77,59 @@ class ModelingDatasetTest(unittest.TestCase):
         self.assertEqual(effective_cv_folds([0, 0, 1, 1, 1], requested_folds=5), 2)
         self.assertEqual(effective_cv_folds([0, 1, 1], requested_folds=5), 0)
         self.assertEqual(effective_cv_folds([0, 0, 1, 1], requested_folds=1), 0)
+
+    def test_molecule_group_keys_use_smiles_to_keep_duplicates_together(self) -> None:
+        rows = [
+            {"molecule_chembl_id": "CHEMBL1", "canonical_smiles": "CCO"},
+            {"molecule_chembl_id": "CHEMBL2", "canonical_smiles": "CCO"},
+            {"molecule_chembl_id": "CHEMBL3", "canonical_smiles": "CCN"},
+        ]
+
+        self.assertEqual(molecule_group_keys(rows), ["CCO", "CCO", "CCN"])
+
+    def test_grouped_split_prevents_exact_molecule_overlap(self) -> None:
+        try:
+            deps = import_modeling_dependencies()
+        except ModelingDependencyError:
+            self.skipTest("scikit-learn modeling dependencies are not installed")
+
+        np = deps["np"]
+        rows = [
+            {"molecule_chembl_id": "CHEMBL1", "canonical_smiles": "CCO"},
+            {"molecule_chembl_id": "CHEMBL2", "canonical_smiles": "CCO"},
+            {"molecule_chembl_id": "CHEMBL3", "canonical_smiles": "CCN"},
+            {"molecule_chembl_id": "CHEMBL4", "canonical_smiles": "CCN"},
+            {"molecule_chembl_id": "CHEMBL5", "canonical_smiles": "CCC"},
+            {"molecule_chembl_id": "CHEMBL6", "canonical_smiles": "CCCC"},
+        ]
+        y = np.asarray([1, 1, 0, 0, 1, 0], dtype=int)
+
+        train_indices, test_indices, groups = split_indices(
+            y=y,
+            deps=deps,
+            rows=rows,
+            test_size=0.34,
+            random_state=42,
+            split_strategy="molecule",
+        )
+
+        self.assertIsNotNone(groups)
+        train_groups = {groups[int(index)] for index in train_indices}
+        test_groups = {groups[int(index)] for index in test_indices}
+        self.assertFalse(train_groups & test_groups)
+
+    def test_scaffold_group_keys_group_related_aromatic_compounds(self) -> None:
+        try:
+            groups = scaffold_group_keys(
+                [
+                    {"molecule_chembl_id": "CHEMBL1", "canonical_smiles": "Cc1ccccc1"},
+                    {"molecule_chembl_id": "CHEMBL2", "canonical_smiles": "Oc1ccccc1"},
+                ]
+            )
+        except ModelingDependencyError:
+            self.skipTest("RDKit is not installed")
+
+        self.assertEqual(groups[0], groups[1])
 
 
 if __name__ == "__main__":

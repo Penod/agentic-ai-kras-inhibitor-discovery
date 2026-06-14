@@ -27,8 +27,8 @@ This report collects reproducible figures generated from saved project outputs. 
 
 ## Model Evidence
 
-The best holdout model in the saved comparison is `xgboost` with ROC-AUC `0.984`, PR-AUC `0.996`, F1 `0.964`, and recall `0.977`.
-Five-fold cross-validation for XGBoost produced mean ROC-AUC `0.968` with standard deviation `0.008`.
+The best holdout model in the saved comparison is `random_forest` with ROC-AUC `0.980`, PR-AUC `0.995`, F1 `0.946`, and recall `0.922`.
+Five-fold cross-validation for XGBoost produced mean ROC-AUC `0.968` with standard deviation `0.009`.
 
 ## Generated Figures
 
