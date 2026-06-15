@@ -166,6 +166,8 @@ Five-fold stratified cross-validation:
 
 These metrics support using the classifier for computational prioritization. They do not prove experimental KRAS inhibition.
 
+Note: the currently reported XGBoost results come from the initial random-split modeling workflow. A leakage-controlled validation extension has been developed to evaluate molecule-grouped and scaffold-split generalization, but the current ZINC22 hit triage report reflects the initial XGBoost screening model.
+
 ## Agentic Screening Workflow
 
 The agentic layer evaluates each candidate through small, focused components:
