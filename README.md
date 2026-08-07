@@ -25,8 +25,6 @@ The project is organized around the KRAS pathway:
 | KRAS G12V | Common KRAS mutation with limited direct-inhibitor options |
 | SOS1 | Pathway-relevant exchange factor for future expansion |
 
-Important limitation: the current trained model should be described as a KRAS bioactivity classifier. SOS1 is included in the curation and pathway framing, but the current labeled training set is dominated by KRAS records and does not support a standalone SOS1 predictor yet.
-
 ## Design Goals
 
 I made a few deliberate design choices:
@@ -304,7 +302,7 @@ Several choices were made deliberately:
 - ZINC22 hit candidates are computational predictions only.
 - Docking, molecular dynamics, and experimental validation are not yet implemented in this repository.
 
-## Version 2 Improvements
+## Future(Version) Improvements
 
 The next version should add:
 
@@ -314,5 +312,4 @@ The next version should add:
 - Probability calibration.
 - More explicit assay-type stratification.
 - PubMed/RAG evidence retrieval with citations.
-- Better mapping of important MACCS/Morgan features back to chemical motifs.
 - AWS Batch or ECS deployment for larger screening runs.
