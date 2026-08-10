@@ -126,6 +126,10 @@ The training pipeline compares:
 - Naive Bayes
 - SVM with RBF kernel
 - XGBoost
+Model selection uses a molecule-grouped train/test split (zero shared molecules between train and holdout) and is scored on holdout ROC-AUC. Under this split,
+**Random Forest** is the deployed model; XGBoost and SVM (RBF) are close competitors and remain useful references in the performance report.
+
+To test generalization to unfamiliar chemistry, the same models are also evaluated on a **scaffold split**, where the holdout set shares zero Bemis-Murcko scaffolds with the training set.
 
 I selected XGBoost as the deployed model because it performed best on the holdout ROC-AUC metric and is well suited to heterogeneous descriptor/fingerprint feature spaces. Random Forest performed slightly better in cross-validated ROC-AUC, so both models remain important references in the performance report.
 
@@ -143,28 +147,41 @@ artifacts/models/feature_columns.json
 
 ## Performance Summary
 
-Holdout test-set results for the deployed XGBoost model:
+### Molecule-grouped holdout
 
-| Metric | Value |
-| --- | --- |
-| Accuracy | 0.9429 |
-| Precision | 0.9511 |
-| Recall | 0.9772 |
-| F1 | 0.9640 |
-| ROC-AUC | 0.9845 |
-| PR-AUC | 0.9957 |
+| Metric    | Value |
+| --------- | ----- |
+| Accuracy  | 0.916 |
+| Precision | 0.971 |
+| Recall    | 0.922 |
+| F1        | 0.946 |
+| ROC-AUC   | 0.980 |
+| PR-AUC    | 0.995 |
 
-Five-fold stratified cross-validation:
+Train/holdout molecule overlap: 0. Scaffold overlap: 82 — some analog series appear on both sides, which is why the scaffold-split test below is the more conservative estimate.
 
-| Model | ROC-AUC | PR-AUC | Accuracy | F1 |
-| --- | --- | --- | --- | --- |
-| Random Forest | 0.970 +/- 0.011 | 0.991 +/- 0.003 | 0.925 +/- 0.016 | 0.952 +/- 0.010 |
-| XGBoost | 0.968 +/- 0.008 | 0.990 +/- 0.002 | 0.933 +/- 0.017 | 0.958 +/- 0.011 |
-| Dummy baseline | 0.500 +/- 0.000 | 0.781 +/- 0.001 | 0.781 +/- 0.001 | 0.877 +/- 0.001 |
+### Scaffold split
 
-These metrics support using the classifier for computational prioritization. They do not prove experimental KRAS inhibition.
+| Metric    | Value |
+| --------- | ----- |
+| Accuracy  | 0.875 |
+| Precision | 0.961 |
+| Recall    | 0.884 |
+| F1        | 0.921 |
+| ROC-AUC   | 0.938 |
+| PR-AUC    | 0.986 |
 
-Note: the currently reported XGBoost results come from the initial random-split modeling workflow. A leakage-controlled validation extension has been developed to evaluate molecule-grouped and scaffold-split generalization, but the current ZINC22 hit triage report reflects the initial XGBoost screening model.
+Performance drops modestly under the stricter split, as expected, and still clears the dummy baseline (ROC-AUC 0.500) by a wide margin.
+
+Five-fold molecule-grouped cross-validation:
+
+| Model         | ROC-AUC         | PR-AUC          | Accuracy        | F1              |
+| ------------- | --------------- | --------------- | --------------- | --------------- |
+| Random Forest | 0.971 +/- 0.011 | 0.991 +/- 0.004 | 0.928 +/- 0.014 | 0.954 +/- 0.009 |
+| XGBoost       | 0.968 +/- 0.009 | 0.990 +/- 0.003 | 0.935 +/- 0.011 | 0.959 +/- 0.007 |
+| Dummy baseline| 0.500 +/- 0.000 | 0.781 +/- 0.001 | 0.781 +/- 0.001 | 0.877 +/- 0.001 |
+
+These metrics support using the classifier for computational prioritization within the agentic screening pipeline. They do not prove experimental KRAS inhibition, binding, or mutant selectivity.
 
 ## Agentic Screening Workflow
 
@@ -223,14 +240,16 @@ reports/zinc_hit_triage_report.pdf
 
 ## Known Inhibitor Benchmark
 
-The repository includes a small positive-control set:
+| Compound  | Status                          | Predicted KRAS-active probability | Recommendation      |
+| --------- | -------------------------------- | ---------------------------------- | -------------------- |
+| Sotorasib | FDA-approved (KRAS G12C)        | 0.992                              | Advance               |
+| Divarasib | Investigational (KRAS G12C)     | 0.998                              | Advance               |
+| Adagrasib | FDA-approved (KRAS G12C)        | 0.998                              | Advance               |
+| MRTX1133  | Investigational (KRAS G12D)     | 1.000                              | Advance with review   |
 
-- Sotorasib
-- Adagrasib
-- Divarasib
-- MRTX1133
+All four known inhibitors are correctly flagged as KRAS-active with high confidence, which is a useful sanity check on the bioactivity classifier.
 
-This is a sanity check, not a substitute for external validation. If a known inhibitor is scored poorly, that result should be documented as a model limitation and investigated through SMILES verification, training data coverage, and applicability-domain analysis.
+The mutant-selectivity hypothesis agent is not yet reliable at distinguishing which KRAS mutant a compound targets: it labels all four compounds above as "Best hypothesis: G12D," even though three are G12C-selective drugs. This is expected given its current heuristic (non-trained) design and should not be read as a validated mutant-selectivity prediction.
 
 ## Reproducibility
 
@@ -296,10 +315,11 @@ Several choices were made deliberately:
 
 ## Limitations
 
-- The model predicts KRAS bioactivity from curated public assay data; it does not prove direct binding or mutant selectivity.
+- The deployed classifier predicts general KRAS-pathway bioactivity from curated public assay data. It does not prove direct binding, functional inhibition, or mutant selectivity.
 - SOS1 is included as a pathway node but is not yet a separately trained predictive model.
-- ChEMBL activity records are heterogeneous across assay conditions.
-- ZINC22 hit candidates are computational predictions only.
+- Scaffold-split performance (ROC-AUC 0.938) is meaningfully lower than molecule-grouped holdout performance (ROC-AUC 0.980) and should be treated as the more realistic estimate for structurally novel candidates.
+- ChEMBL activity records are heterogeneous across assay conditions and are not yet stratified by assay type.
+- ZINC22 hit candidates are computational predictions only; confirm the hit triage report was generated against the current molecule-grouped/scaffold-validated model before citing it as final evidence.
 - Docking, molecular dynamics, and experimental validation are not yet implemented in this repository.
 
 ## Future(Version) Improvements
