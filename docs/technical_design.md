@@ -6,7 +6,7 @@ Build an agentic AI platform for KRAS mutant-selective inhibitor discovery, with
 
 ## Current Prototype
 
-The current version provides a runnable scaffold for candidate evaluation while preserving clean extension points for real KRAS bioactivity models, PubMed retrieval, docking, molecular dynamics, and AWS deployment.
+The current version provides a runnable scaffold for candidate evaluation while preserving clean extension points for real KRAS bioactivity models, PubMed retrieval, docking, and molecular dynamics. The orchestration layer is already deployed on AWS (Amazon ECS Fargate, Application Load Balancer, Amazon Bedrock Nova Lite, Amazon ECR, CloudWatch — see the Deployment section of the README); the next infrastructure step is migrating that orchestration layer to Amazon Bedrock AgentCore.
 
 After model training, `KRASTargetFitAgent` attempts to load `artifacts/models/kras_best_model.pkl` and `artifacts/models/feature_columns.json`. If model artifacts and RDKit dependencies are available, it generates a single-row RDKit feature vector for the submitted SMILES string and returns a trained-model probability. If dependencies or artifacts are missing, it falls back to the transparent heuristic target-fit score.
 

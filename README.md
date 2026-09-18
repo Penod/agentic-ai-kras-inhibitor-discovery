@@ -194,6 +194,29 @@ This is a genuine capability gap the rule-based pipeline doesn't close on its ow
 
 This has been demonstrated end-to-end on AWS Bedrock (Amazon Nova) for both supported workflows: a single-molecule evaluation request that correctly invoked `evaluate_candidate` and explained all 9 agent findings in natural language, and a full-library request that correctly chained `run_batch_screen` followed by `triage_screening_hits` against the 5,000-compound ZINC22 run documented above, reasoning explicitly about why zero-then-four hits passed the triage criteria.
 
+## Deployment
+
+The orchestration layer described above is deployed on AWS, not just demonstrated locally:
+
+- **Amazon ECS (Fargate)** runs the containerized FastAPI service (`api.py`) behind an **Application Load Balancer**, which terminates public TLS and forwards requests to the task.
+- The FastAPI service exposes three endpoints: `/health` (liveness check), `/evaluate` (direct call into `evaluate_candidates()` — no LLM involved), and `/chat` (routed through the Strands agent for natural-language requests).
+- The container image is built from the repository `Dockerfile` and stored in **Amazon ECR**; the ECS task definition pulls `kras-agent-api:latest` from there.
+- The Strands agent calls **Amazon Bedrock (Nova Lite, us-east-1)** to decide which underlying tool to invoke. The ECS task's IAM role is scoped to `bedrock:InvokeModel` only — no console access and no other AWS permissions.
+- Request and result logs are captured in **CloudWatch** per invocation.
+
+This is a validated research-prototype deployment, not a production SLA-backed service: it demonstrates that the orchestration layer runs end-to-end on real AWS infrastructure rather than only on a local machine, with the underlying 9-agent pipeline and trained Random Forest classifier unchanged from the CLI-driven workflow described above.
+
+Deployment evidence (`docs/images/`):
+
+| Screenshot | What it shows |
+| --- | --- |
+| `kras-deploy-01-ecs-resources-active.png` | ECS Fargate service and task running |
+| `kras-deploy-02-health-check-browser.png` | `/health` endpoint responding through the Application Load Balancer |
+| `kras-deploy-03-evaluate-response-trainedmodel.png` | `/evaluate` response showing a live `trained_model` inference |
+| `kras-deploy-04-cloudwatch-logs.png` | CloudWatch logs for a request/response cycle |
+
+**Next step:** migrate the orchestration layer from this self-managed Strands SDK + ECS deployment to **Amazon Bedrock AgentCore**, AWS's managed agentic runtime, for built-in session memory, observability, and simplified scaling (tracked in Future Improvements below).
+
 ## ZINC22 Screening and Hit Triage
 
 A sampled ZINC22 lead-like tranche was used for a pilot virtual screen.
@@ -336,4 +359,5 @@ The statistical exploration report is generated from saved CSV and JSON outputs,
 - Applicability-domain analysis and probability calibration for model predictions.
 - More explicit assay-type stratification.
 - PubMed/RAG evidence retrieval with citations, replacing the current literature-agent placeholder.
-- AWS deployment (Lambda/AgentCore or ECS/Batch) for the orchestration layer and larger screening runs.
+- Migrate the orchestration layer from the current self-managed Strands SDK + ECS Fargate deployment to Amazon Bedrock AgentCore, AWS's managed agentic runtime, for built-in memory, observability, and simplified scaling.
+- Extend the deployed API to support scalable batch screening jobs, rather than single-molecule requests only.

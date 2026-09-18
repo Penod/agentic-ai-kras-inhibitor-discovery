@@ -39,7 +39,7 @@ The main engineering risks are not architectural. They are mostly around scope c
 
 | File | Purpose | Why it exists | Review notes |
 | --- | --- | --- | --- |
-| `docs/technical_design.md` | System architecture and pipeline outputs | Captures design intent beyond README commands | Good high-level companion; should be updated when docking/AWS modules are added |
+| `docs/technical_design.md` | System architecture and pipeline outputs | Captures design intent beyond README commands | Good high-level companion; updated to reflect the live AWS deployment (see README Deployment section); should be updated again when docking modules are added |
 | `docs/reproducibility_protocol.md` | Exact rebuild order and reproducibility caveats | Makes the workflow reviewable and rerunnable | Important because ChEMBL is live and can change |
 | `docs/niw_positioning.md` | Petition/portfolio framing | Separates immigration narrative from engineering README | Keep this separate so README stays technical |
 | `docs/engineering_review.md` | Maintenance and ownership review | Records tradeoffs, file purpose, and cleanup opportunities | This document should evolve as the repo matures |
