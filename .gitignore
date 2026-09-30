@@ -32,3 +32,6 @@ artifacts/models/*
 !artifacts/models/.gitkeep
 data/screening_results/
 output/
+
+# unredacted deployment screenshots (petition exhibits only, not for GitHub)
+docs/images/*-original.png
