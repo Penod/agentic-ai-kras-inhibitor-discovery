@@ -1,0 +1,12 @@
+.venv
+__pycache__
+*.pyc
+.git
+data/external
+data/screening_results
+output
+releases
+docs
+tests
+.pytest_cache
+*.egg-info

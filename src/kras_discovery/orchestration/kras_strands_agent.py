@@ -60,7 +60,8 @@ logger = logging.getLogger("kras_agent")
 SYSTEM_PROMPT = """You are a research orchestration agent for KRAS-pathway
 inhibitor discovery, sitting on top of an existing 9-agent evaluation
 pipeline (validation, feature computation, KRAS target-fit scoring via
-a trained XGBoost classifier at ROC-AUC 0.9845, mutant selectivity,
+a trained Random Forest classifier (ROC-AUC 0.980 molecule-grouped /
+0.938 scaffold-split), mutant selectivity,
 ADMET, toxicity, literature, manufacturability, and clinical
 relevance). That pipeline's internal sequencing is fixed and already
 correct -- your job is to decide which WORKFLOW to run and in what
